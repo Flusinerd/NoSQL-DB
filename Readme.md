@@ -1,5 +1,5 @@
 # No SQL Datenbank Overview
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
 Dies ist die No SQL Datenbank Übersicht für das Labor für Angewandte Informatik & Datenbanken.
 
 Es behandelt:

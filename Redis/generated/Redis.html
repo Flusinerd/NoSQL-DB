@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Redis.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Zunächst erstellen wir uns wieder eine Redis-Instanz über Docker</p>
+<pre class="hljs"><code><div>docker network create redis-demo
+docker run --name redis-demo --network redis-demo -d redis
+</div></code></pre>
+<p>Und starten einen 2. Container mit dem wir uns zum Redis-Server verbinden.</p>
+<pre class="hljs"><code><div>docker run -it --network redis-demo --rm redis redis-cli -h redis-demo
+</div></code></pre>
+<h1 id="redis">REDIS</h1>
+<p>Redis ist key-value basiert. Das heißt wir speichern uns einen Wert unter einem Key ab.</p>
+<h2 id="set-key-value">Set key-value</h2>
+<p>Um ein Key-Value Paar hinzuzufügen nutzen wir <code>SET</code></p>
+<pre class="hljs"><code><div> SET server:name &quot;fido&quot;
+</div></code></pre>
+<h2 id="get-key-value">Get key-value</h2>
+<p>Um unseren Key jetzt zu bekommen nutzen wir <code>GET &lt;key&gt;</code></p>
+<pre class="hljs"><code><div>GET server:name &quot;fido&quot;
+</div></code></pre>
+<h2 id="check-if-exists">Check if exists</h2>
+<p>Um zu überprüfen ob ein key existiert nutzen wir <code>EXISTS &lt;key&gt;</code><br>
+Eine <code>1</code> bedeutet der Key existiert. Eine <code>0</code> bedeutet er existiert nicht.</p>
+<pre class="hljs"><code><div>EXISTS server:name
+</div></code></pre>
+<h2 id="delete">Delete</h2>
+<p>Mit <code>DEL &lt;key&gt;</code> können wir den Key wieder löschen</p>
+<pre class="hljs"><code><div>DEL server:name
+</div></code></pre>
+<h2 id="increment--decrement">Increment / Decrement</h2>
+<p>Bei Operationen wir Increment und Decrement kann es zu Problemen kommen, wenn 2 Services gleichzeitig auf die Daten zugreifen wollen. Deshalb bietet Redis die <code>INCR</code> und <code>DECR</code> Funktionen.</p>
+<p>Mit <code>INCR &lt;key&gt;</code> oder <code>DECR &lt;key&gt;</code> wird der Wert in dem Key um 1 erhöht oder verringert.<br>
+Mit <code>INCRBY &lt;key&gt; &lt;amount&gt;</code> oder <code>DECRBY &lt;key&gt; &lt;amount&gt;</code> um <code>amount</code> erhöht oder verringert.<br>
+Ein gleichzeitiger Zugriff auf die Funktion ist kein Problem, Redis sorgt dafür, dass alle Increments und Decrements ausgeführt werden.</p>
+<pre class="hljs"><code><div>SET connections 10
+INCR server:name
+</div></code></pre>
+<pre class="hljs"><code><div>INCRBY connections 100 
+</div></code></pre>
+<pre class="hljs"><code><div>SET connections 10
+DECR server:name
+DECRBY connections 100 
+</div></code></pre>
+<p>Vorteil: Ist atomic, keine Probleme mit gleichzeitigem Zugriff auf Daten</p>
+<h2 id="expire--ttl">Expire / TTL</h2>
+<p>Wir können einen key-value Paar eine TTL (Time to life) geben. Nach dem ablauf dieser Zeit wird das Paar gelöscht (Nicht mehr über GET erreichbar, bzw. returned nil).
+Das Kommando lautet <code>EXPIRE &lt;key&gt; &lt;TTL&gt;</code>. Solange die TTL noch nicht überschritten ist, können wir mit einem erneuten Aufruf die Zeit erneut setzen. Dies überschreibt dann die derzeit verbleibende Zeit.
+Die Zeit ist immer in Sekunden.</p>
+<pre class="hljs"><code><div>SET resource:lock &quot;Redis Demo&quot;
+EXPIRE resource:lock 120
+
+</div></code></pre>
+<p>Über <code>TTL &lt;key&gt;</code> bekommen wir die verbleibende TTL des <code>key</code>s</p>
+<pre class="hljs"><code><div>TTL resource:lock
+</div></code></pre>
+<p>Dabei heißt:
+<code>-1</code>: Will never expire
+<code>-2</code>: Does not exists anymore
+<code>40</code>: 40 Sekunden TTL verbleibend.</p>
+<p>Wir können auch beim setzen des Paares die TTL angeben:
+<code>SET &lt;key&gt; &lt;value&gt; EX &lt;TTL&gt;</code></p>
+<pre class="hljs"><code><div>SET resource:lock &quot;Redis Demo&quot; EX 120
+TTL resource:lock
+</div></code></pre>
+<p>Um ein <code>EXPIRE</code> abzubrechen, können wir <code>PERSIST &lt;key&gt;</code> nutzen. Das setzt die TTL auf <code>-1</code> (will never expire).
+Expire abbrechen:</p>
+<pre class="hljs"><code><div>PERSIST resource:lock
+</div></code></pre>
+<h2 id="listen">Listen</h2>
+<p>Listen sind wie Arrays.
+<code>LLEN</code>, <code>LPOP</code>, <code>RPOP</code>
+Alles was die Liste füllt, erstellt die Liste. Man muss sie nicht erst erstellen, dann füllen.
+Mit <code>RPUSH</code>, <code>LPUSH</code>, können wir Elemente einer Liste hinzufügen (Linksseitig, Rechtsseitig).</p>
+<pre class="hljs"><code><div>RPUSH friends &quot;Alice&quot;
+RPUSH friends &quot;Bob&quot;
+RPUSH friends &quot;Jeff&quot;
+</div></code></pre>
+<p>Wir können auch mehrere Elemente in einem mal hinzufügen:</p>
+<pre class="hljs"><code><div>RPUSH friends &quot;Alice&quot; &quot;Bob&quot; &quot;Jeff&quot;
+</div></code></pre>
+<h3 id="subset">Subset</h3>
+<p>Mit dem <code>LRANGE</code> Kommando bekommen wir ein Subset der Liste:
+<code>LRANGE &lt;list&gt; &lt;startindex&gt; &lt;endindex&gt;</code></p>
+<pre class="hljs"><code><div>LRANGE friends 0 -1
+</div></code></pre>
+<p>-1: Bis zum Ende
+-2: Bis Vorletze etc...</p>
+<h3 id="l%C3%A4nge">Länge</h3>
+<p><code>LLEN &lt;list&gt;</code> gibt uns die Länge der Liste zurück.</p>
+<h3 id="l%C3%B6schen">Löschen</h3>
+<p>Mit , <code>LPOP &lt;list&gt;</code>, <code>RPOP &lt;list&gt;</code>. Können wir das erste oder das letzte Element einer Liste löschen. Das gelöschte Element wird returned.</p>
+<h2 id="sets">Sets</h2>
+<p>Sets sind eine unsortierte Sammlung von Strings.
+Im Gegensatz zu Listen, sind Sie nicht sortiert und der Zugriff erfolgt deshalb nicht über einen Index, sondern über den String-Wert selber.</p>
+<h3 id="add">Add</h3>
+<p>Mit <code>SADD &lt;set&gt; &lt;value&gt;</code> können wir einen String mit dem Wert <code>value</code> dem set hinzufügen.
+Wie bei Lists muss ein Set nicht initialisiert werden.
+Returnd <code>0</code>, wenn der String bereits im Set vorhanden ist.</p>
+<pre class="hljs"><code><div>SADD superpowers &quot;flight&quot;
+SADD superpowers &quot;x-ray vision&quot; &quot;reflexes&quot;
+</div></code></pre>
+<h3 id="remove">Remove</h3>
+<p>Mit <code>SREM &lt;set&gt; &lt;value&gt;</code> können wir einen String wieder aus dem Set entfernen.
+Falls etwas gelöscht wurde, returnt diese Funktion <code>1</code>.</p>
+<pre class="hljs"><code><div>SREM superpowers &quot;reflexes&quot;
+</div></code></pre>
+<h2 id="sorted-sets">Sorted Sets</h2>
+<p>Sorted Sets sind den normalen Sets sehr ähnlich. Sie enthalten eine Sammlung aus eindeutigen Strings.<br>
+Wie der Name <code>sorted</code> schon sagt, sind sie aber, im Gegensatz zum normalen Set, sortiert.
+Die Sortierung findet über einen <code>score</code> statt. Es wird vom kleinsten <code>score</code> zum größten <code>score</code> sortiert.<br>
+Die <code>score</code>s dürfen sich wiederholen.</p>
+<h3 id="add">ADD</h3>
+<p>Mit <code>ZADD &lt;set-name&gt; &lt;score&gt; &lt;value&gt;</code> können wir ein neues Element in unser sorted set einfügen.</p>
+<pre class="hljs"><code><div>ZADD hackers 1940 &quot;Alan Kay&quot;
+ZADD hackers 1906 &quot;Grace Hopper&quot;
+ZADD hackers 1953 &quot;Richard Stallman&quot;
+ZADD hackers 1965 &quot;Yukihiro Matsumoto&quot;
+ZADD hackers 1916 &quot;Claude Shannon&quot;
+ZADD hackers 1969 &quot;Linus Torvalds&quot;
+ZADD hackers 1957 &quot;Sophie Wilson&quot;
+ZADD hackers 1912 &quot;Alan Turing&quot;
+</div></code></pre>
+<h3 id="zrange">ZRANGE</h3>
+<p>Mit <code>ZRANGE &lt;startindex&gt; &lt;endindex&gt;</code> können wir analog zu den Listen ein oder mehrere Elemente aus unserem Sorted Set bekommen.</p>
+<pre class="hljs"><code><div>ZRANGE hackers 0 -1
+</div></code></pre>
+<h2 id="hashes">Hashes</h2>
+<p>Werden genutzt um einem String-Feld einen Wert zuzuweisen. Sie eignen sich super um Objekte zu repräsentieren.<br>
+Mit <code>HSET &lt;hash-name&gt; &lt;field&gt; &lt;value&gt;</code> können wir ein Feld - Wert Paar in einem Hash anlegen.<br>
+Auch hier gilt: Ein hash muss nicht erst initialisiert werden. Wir können einfach in ein noch nicht vorhandenden Hash Werte ablegen und Redis legt einen neuen Hash an.</p>
+<pre class="hljs"><code><div>HSET user:1000 name &quot;John Smith&quot;
+HSET user:1000 email &quot;email@email.com&quot;
+HSET user:1000 password &quot;s3cr3t&quot;
+</div></code></pre>
+<p>Um alle Felder eines Hashes zu bekommen nutzen wir <code>HGETALL &lt;hash&gt;</code></p>
+<pre class="hljs"><code><div>HGETALL user:1000
+</div></code></pre>
+<h3 id="set-multiple">Set multiple</h3>
+<p>Wir können auch mehrere Felder in einem Kommando anlegen. Dazu nutzen wir <code>HMSET &lt;hash&gt; [... &lt;field&gt;, &lt;value&gt;]</code>.</p>
+<pre class="hljs"><code><div>HMSET user:1001 name &quot;Mary Jones&quot; password &quot;hidden&quot; email &quot;mjones@example.com&quot;
+</div></code></pre>
+<h3 id="get-single-field">Get single field</h3>
+<p>Wenn uns nur ein einziges Feld aus einem Hash interessiert bekommen wir dieses über <code>HGET &lt;hash&gt; &lt;field&gt;</code></p>
+<pre class="hljs"><code><div>HGET user:1001 name
+</div></code></pre>
+<h3 id="increment">Increment</h3>
+<p>Auch Hashes bieten Funktionen für Increment und Decrement.<br>
+<code>HINCRBY &lt;hash&gt; &lt;field&gt; &lt;amount&gt;</code> und <code>HDECRBY &lt;hash&gt; &lt;field&gt; &lt;amount&gt;</code>.
+Sie funktionieren analog zu den <code>DECRBY</code> und <code>INCRBY</code> Funktionen der normalen Key-Value Paaren.
+Auch sie bieten Sicherheit bei gleichzeitigem Zugriff auf die gleichen Daten.</p>
+<pre class="hljs"><code><div>HSET user:1000 visits 10
+</div></code></pre>
+<pre class="hljs"><code><div>HINCRBY user:1000 visits 1
+</div></code></pre>
+<h2 id="anwendungsf%C3%A4lle">Anwendungsfälle:</h2>
+<p>Meistens in moderner micro-services Architektur.</p>
+<p>REDIS Strings:</p>
+<ul>
+<li>Session Cache</li>
+<li>Queues</li>
+<li>Usage &amp; Meterd Billing</li>
+</ul>
+<p>REDIS Lists:</p>
+<ul>
+<li>Social Networking Sites (Twitter timelines, homepage feeds, trending feeds)</li>
+<li>RSS Feeds</li>
+<li>Leaderboards</li>
+</ul>
+<p>REDIS Sets:</p>
+<ul>
+<li>Analyzing Ecommerce Sales (Customer behavior)</li>
+<li>IP Address Tracking</li>
+<li>Inappropriate Content Filtering</li>
+</ul>
+<p>REDIS Sorted Sets:</p>
+<ul>
+<li>Q&amp;A Platforms</li>
+<li>Scoreboards</li>
+<li>Task Scheduling Service</li>
+<li>Geo Hashing</li>
+</ul>
+<p>REDIS Hashes:</p>
+<ul>
+<li>User Profiles</li>
+<li>User Posts</li>
+<li>Metrics</li>
+</ul>
+<h2 id="data-persitance">Data Persitance</h2>
+<h3 id="default---snapshots">Default - Snapshots</h3>
+<p>Standardmäßig nutzt Redis <code>Snapshots</code> um Daten zu speichern.
+Die Daten werden in eine Datei <code>dump.rdb</code> gespeichert. Mit <code>save &lt;seconds&gt; &lt;changes&gt;</code> kann eingestellt werden, nach wievielen Sekunden oder wievielen Änderungen am Datensatz Redis einen neuen Snapshot erstellen soll. Sonst kann mit <code>SAVE</code> oder <code>BGSAVE</code> manuell gespeichert werden.</p>
+<h3 id="append-only-file">Append only file</h3>
+<p>Eine andere Methode ist das <code>Append-only-file</code>. Das bietet mehr Sicherheit gegen Datenverlust (Falls zb. ein Stromausfall vor einem Snapshot aber nach Datenänderungen eintritt), da es nach jeder Datensatzänderung diese auf die Festplatte schreibt. Diesen Modus kann man mit <code>appendonly yes</code> einschalten.
+Wenn man nun die Instanz neustartet, dann führt Redis alle mitgeschriebenen Kommandos beim Start aus, sodass der Datensatz auf dem alten Stand wieder ist.</p>
+<p>Wenn wir also 100 mal einen Wert erhöhen (<code>INCR &lt;key&gt;</code>) wird dies 100 mal in das <code>AOF</code> geschrieben. Dadurch wird das <code>AOF</code> sehr schnell sehr groß. Aus diesem Grund kann Redis im Hintergrund das <code>AOF</code> neubauen. Dies kann man mit <code>BGREWRITEAOF</code> einmalig machen. Unter Redis 2.4 und neuer kann man dies auch automatisch machen lassen. Dazu muss dann die Konfiguration entsprechend angepasst werden.</p>
+<h3 id="mehr-zum-thema">Mehr zum Thema</h3>
+<p><a href="https://redis.io/topics/persistence">Persitance Docs</a></p>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CouchDB.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="couchdb">CouchDB</h1>
+<p>CouchDBs Fokus liegt klar auf Web Anwendungen. So erlaubt es direkt <code>JSON</code> zu speichern, seine Dokumente über <code>HTTP</code> zu bekommen und diese mit <code>JavaScript</code> zu verändern.
+CouchDB erlaubt Replikation und master-master setups mit automatischer Konfliktauflösung. Außerdem bietet CouchDB <code>Change Notifications</code> an, die über verschiedene Methoden erreichbar sind.</p>
+<h2 id="prinzip-hinter-der-datenbank">Prinzip hinter der Datenbank</h2>
+<p>Ähnlich wie MongoDB ist CouchDB eine Dokumenten Orientierte Datenbank. Es gibt hier allerding so genannte <code>Design Documents</code>. Dies sind besondere Dokumente die Innerhalb einer Datenbank existieren. Sie dienen dem Bauen von Indexen, Validierung von Updates, Formatierung von Query Ergebnissen und Filter Replikation.</p>
+<h2 id="starten-einer-instanz">Starten einer Instanz</h2>
+<pre class="hljs"><code><div>docker run -p 5984:5984 -d -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=password couchdb
+</div></code></pre>
+<pre class="hljs"><code><div>curl http://127.0.0.1:5984/
+</div></code></pre>
+<h2 id="verbinden-zum-web-interface">Verbinden zum Web Interface</h2>
+<pre class="hljs"><code><div>http://localhost:5984/_utils/#login
+</div></code></pre>
+<h2 id="alle-datenbanken-anzeigen-lassen">Alle Datenbanken anzeigen lassen</h2>
+<pre class="hljs"><code><div>GET /_all_dbs
+</div></code></pre>
+<p>Dies listet uns alle vorhandenen Datenbanken.</p>
+<h2 id="get-datenbank">GET Datenbank</h2>
+<pre class="hljs"><code><div>GET /db
+</div></code></pre>
+<p>Hiermit können wir Metadaten der Datenbank mit dem Namen <code>db</code> bekommen.</p>
+<h2 id="alle-dokumente-innerhalb-einer-datenbank">Alle Dokumente innerhalb einer Datenbank</h2>
+<pre class="hljs"><code><div>GET /{db}/_all_docs
+</div></code></pre>
+<p>Hiermit bekommen wir alle Dokumente, die in der Datenbank <code>db</code> sind.</p>
+<h2 id="innerhalb-einer-db-suchen">Innerhalb einer DB suchen</h2>
+<pre class="hljs"><code><div>POST /{db}/_find
+</div></code></pre>
+<p>Über den request.body.selector können wir dann ein JSON Objekt schicken, welches den Filter enthält.</p>
+<p>Beispiel:</p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-string">"year"</span>: {$gt: <span class="hljs-number">2010</span>}
+}
+</div></code></pre>
+<h2 id="eine-neue-datenbank-anlegen">Eine neue Datenbank anlegen</h2>
+<pre class="hljs"><code><div>PUT /{db}
+</div></code></pre>
+<p>Mit PUT können wir eine neue Datenbank anlegen. Dabei entspricht <code>{db}</code> dem Datenbanknamen.
+Dieser muss mit einem Kleinbuchstaben anfangen, darf nur aus Kleinbuchstaben, Zahlen und<br>
+<code>_</code><br>
+<code>$</code><br>
+<code>(</code><br>
+<code>)</code><br>
+<code>+</code><br>
+<code>-</code><br>
+<code>/</code><br>
+bestehen</p>
+<h2 id="ein-dokument-in-einer-datenbank-anlegen">Ein Dokument in einer Datenbank anlegen</h2>
+<pre class="hljs"><code><div>POST /{db}
+</div></code></pre>
+<p>Im Body der POST Request können wir unsere Daten für das Dokument ablegen.<br>
+Wenn wir ein <code>_id</code> Feld mitangeben, wird dieses übernommen sofern kein Dokument mit der <code>_id</code> bereits existiert.<br>
+Falls bereits ein Dokument mit der <code>_id</code> existiert bekommen wir ein <code>409 Conflict</code>.<br>
+Falls <code>_id</code> weggelassen wird, dann wird die ID automatisch generiert.</p>
+<h2 id="ein-dokument-%C3%BCber-die-id-bekommen">Ein Dokument über die <code>_id</code> bekommen</h2>
+<pre class="hljs"><code><div>GET /{db}/{docid}
+</div></code></pre>
+<p>Hiermit bekommen wir das Dokument mit der _id <code>{docid}</code> aus der Datenbank <code>{db}</code></p>
+<h2 id="ein-dokument-%C3%BCber-put-upserten">Ein Dokument über PUT Upserten</h2>
+<pre class="hljs"><code><div>PUT /{db}/{docid}
+</div></code></pre>
+<p>Hiermit können wir ein Dokument mit der _id <code>{id}</code> upserten (Update oder Insert). Wenn wir eine Update ausführen wollen, müssen wir enwtweder, die derzeitige Dokument Revision im Request Body mit angeben, als <code>rev</code> Query Parameter oder im <code>If-Match</code> Request header.</p>
+<h2 id="ein-dokument-l%C3%B6schen">Ein Dokument löschen</h2>
+<pre class="hljs"><code><div>DELETE /{db}/{docid}
+</div></code></pre>
+<p>Hiermit können wir ein Dokument mit der <code>{docid}</code> aus der Datenbank <code>{db}</code> löschen. Dabei muss die derzeitige Revision des Dokument mit angegeben werden. Dies kann man über den <code>rev</code> parameter oder dem <code>If-Match</code> Header machen.</p>
+<p>Dem Dokument wird dann das Feld <code>_deleted</code> mit dem Wert <code>true</code> gegeben, damit taucht das Dokument nicht mehr in Queries auf. CouchDB löscht Dokumente nicht vollständig sondern lässt nur sehr Grundlegende Informationen über das Dokument in der Datenbank. Dies wird benötigt um die DELETE Operation auf andere Datenbanken zu replizieren.</p>
+<h2 id="selectors">Selectors</h2>
+<p>Das <code>selector</code> Feld des Request Bodies wir häufig benötigt und gibt an, welche Kriterien das oder die Dokumente haben sollen, mit dem wir weiter arbeiten wollen.</p>
+<p>Das <code>selector</code> Feld ist dabei ein <code>JSON Object</code>, welches Felder und dazugehörige Filter Werte enthält. Um zum Beispiel alle Dokumente zu finden, die das Feld <code>year</code> mit dem Wert <code>2000</code> enthälten. Setzen wir das <code>selector</code> Feld wie folgt:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"selector"</span>: {
+  <span class="hljs-attr">"year"</span>: <span class="hljs-number">2000</span>
+}
+</div></code></pre>
+<p>Es gibt auch die Möglichkeit mehrere Felder anzugeben. Diese werden dann logisch mit einem <code>Und</code> Verknüpft. Es müssen also alle <code>Feld-Wert</code> Paare passen:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"selector"</span>: {
+  <span class="hljs-attr">"year"</span>: <span class="hljs-number">2000</span>,
+  <span class="hljs-attr">"month"</span>: <span class="hljs-number">5</span>
+}
+</div></code></pre>
+<p>Hier müssen die Dokumente also im Feld <code>year</code> den Wert <code>2000</code> haben UND im Feld <code>month</code> den Wert <code>5</code>.</p>
+<h3 id="operatoren">Operatoren:</h3>
+<p>Es gibt mehrere Operatoren die es uns erlauben den <code>selector</code> weiter anzupassen. Darunter sind:</p>
+<ul>
+<li><code>$eq</code> (Equal)</li>
+<li><code>$gt</code> (Greater than)</li>
+<li><code>$gte</code> (Greater than equal)</li>
+<li><code>$lt</code>  (Less than)</li>
+<li><code>$lte</code> (Less than equal)</li>
+<li><code>$ne</code> (Not Equal)</li>
+</ul>
+<p>Es wird empfohlen IMMER einen <code>Equality Operator</code> als Basis seiner Query zu nehmen. Sonst kann CouchDB nicht mit evtl. vorhandenen Indizes arbeiten und somit müssen alle Dokumente durchsucht werden. Aus der Liste oben sind alle außer der <code>$ne</code> Operator <code>Equality Operator</code>.</p>
+<p>Weitere Operatoren sind:
+<img src="Operators.jpg" alt=""></p>
+<p>Ein Beispiel für die Nutzung des <code>$or</code> Operators:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"selector"</span>:{
+  <span class="hljs-attr">"$or"</span>: [
+    { <span class="hljs-attr">"year"</span>: <span class="hljs-number">2000</span> },
+    { <span class="hljs-attr">"year"</span>: <span class="hljs-number">2005</span> }
+  ]
+}
+</div></code></pre>
+<p>Hier würden alle Dokumente zurückgegeben werden, die im <code>year</code> Feld die Werte <code>2000</code> oder <code>2005</code> haben.</p>
+<h3 id="subfelder">Subfelder</h3>
+<p>Wir können für Subfelder eine Kurzschreibweise nutzen:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"selector"</span>: {
+  <span class="hljs-attr">"date"</span>: {
+    <span class="hljs-attr">"year"</span>: <span class="hljs-number">2000</span>
+  }
+}
+</div></code></pre>
+<p>Können wir mit:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"selector"</span>: {
+  <span class="hljs-attr">"date.year"</span>: <span class="hljs-number">2000</span>
+}
+</div></code></pre>
+<p>abkürzen.</p>
+<h2 id="sortieren">Sortieren</h2>
+<p>Mithilfe des <code>sort</code> Feldes können wir unsere Ergebnisse sortieren.
+Das <code>sort</code> Feld enthält eine Liste an Feldern nach denen sortiert werden soll. Dabei wird zuerst nach dem 1. <code>Feld-Richtungs Paar</code> sortiert, dann innerhalb dieser Sortierung nach dem 2. und so weiter.</p>
+<p>Um nach einem Feld sortieren zu können, muss ein Index auf dem Feld liegen.</p>
+<p>Ein Beispiel wie das Feld aussehen könnte, wenn wir nach Jahren, dann Monaten und dann Tagen sortieren wollen:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"sort"</span>: [
+  { <span class="hljs-attr">"year"</span>: <span class="hljs-string">"asc"</span> },
+  { <span class="hljs-attr">"month"</span>: <span class="hljs-string">"asc"</span> },
+  { <span class="hljs-attr">"day"</span>: <span class="hljs-string">"asc"</span> }
+]
+</div></code></pre>
+<p>Dabei können wir zwischen <code>asc</code> (Aufsteigend) und <code>desc</code> (Absteigend) frei wählen. Falls wir <code>asc</code> sortieren wollen, können wir dies auch weglassen und nur die Felder benennen:</p>
+<pre class="hljs"><code><div><span class="hljs-string">"sort"</span>: [
+  <span class="hljs-string">"year"</span>,
+  <span class="hljs-string">"month"</span>,
+  <span class="hljs-string">"day"</span>
+]
+</div></code></pre>
+<p>Dies ist also genau das selbe wie oben.</p>
+<h2 id="nur-bestimmte-felder-anzeigen">Nur bestimmte Felder anzeigen.</h2>
+<p>Über das <code>fields</code> Feld können wir angeben, welche Felder zurückgegeben werden sollen. Wenn wir einen Filter anwenden, dann werden auch keine Meta Felder wie <code>_id</code> zurückgegeben, es sei denn wir geben es explizit an.</p>
+<pre class="hljs"><code><div><span class="hljs-string">"fields"</span>: [
+  <span class="hljs-string">"year"</span>, 
+  <span class="hljs-string">"month"</span>
+]
+</div></code></pre>
+<p>So bekommen wir also nur das Feld <code>year</code> und das Feld <code>month</code> zurück und keine weiteren Felder.</p>
+<h1 id="authentication">Authentication</h1>
+<h2 id="basic-authentication">Basic Authentication</h2>
+<p>Dies ist die HTTP Basic Authentication. Dabei wird der <code>Authorization: Baisc &lt;password_hash&gt;</code> Header bei JEDER Anfrage mitgeschickt.
+Diese Methode sollte vermieden werden, da jedes mal das Passwort von CouchDB bearbeitet werden muss.</p>
+<pre class="hljs"><code><div>GET / HTTP/1.1
+Accept: application/json
+Authorization: Basic cm9vdDpyZWxheA==
+Host: localhost:5984
+</div></code></pre>
+<h2 id="cookie-authentication">Cookie Authentication</h2>
+<p>CouchDB generiert ein token, das der Client für die nächsten Anfragen nutzen kann. Tokens sind bis ein Timeout valide. Wenn CouchDB ein Valides Token in subsequenten Anfragen sieht, dann wird der Nutzer automatisch Authentifiziert. Standardmäßig sind Cookies 10 minuten Valide.</p>
+<p>Das bekommen eines Cookies geht über den <code>/_session</code> Endpunkt. <a href="https://docs.couchdb.org/en/stable/api/server/authn.html#session">Cookie Authentication</a></p>
+<h2 id="proxy-authentication">Proxy Authentication</h2>
+<p>Dies ist sehr sinnvoll, wenn man bereits für seine Anwendung ein Authentication Provider hat. Dadurch erspart man sich das doppelte Anlegen von Benutzern.
+<a href="https://docs.couchdb.org/en/stable/api/server/authn.html#proxy-authentication">Proxy Authentication</a></p>
+<h2 id="jwt-authentication">JWT Authentication</h2>
+<p>Mit der JWT Authentication können wir extern generierte JWT (JSON Web Tokens) nutzen anstatt Benutzer mit Rollen un der <code>_users</code> Datenbank anzulegen. Damit das ganze sicher ist, müssen die JWTs mit einem Key gesigned werden, der in CouchDB hinterlegt ist.
+<a href="https://docs.couchdb.org/en/stable/api/server/authn.html#proxy-authentication">JWT Authentication</a></p>
+<h1 id="design-documents">Design Documents</h1>
+<p>Design Documents sind unsere Hauptschnittstelle. Mit ihnen können wir <code>Views</code> erstellen um Informationen aus der Datenbank zu bekommen. Sie werden Identisch zu normalen Dokumenten erstellt, variieren aber in ihrem Inhalt und Definition. Design Documents werden mit ihrer <code>ID</code> benannt. Diese <code>ID</code> ist dann Teil der Design Document URL, über welche wir dann den Inhalt der Datenbank erreichen können.</p>
+<p>Design Documents erfordern <code>JS</code> Kenntnisse. Reiche ich gerne nach, wenn benötigt</p>
+<h2 id="joins">Joins</h2>
+<p>Auch diese benötigen <code>JS</code> Kenntnisse.</p>
+
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Modell.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="modellierung-eines-forum-in-cassandra">Modellierung eines Forum in Cassandra</h1>
+<p>Wir modellieren eine Forum Software. Das Forum besteht aus mehreren Sub-Foren, die wiederum mehrere Topics enthalten können.
+Jedes Topic kann mehrere Posts enthalten.</p>
+<p>Das ER-Diagram sieht so aus:<br>
+<img src="images/ER.jpg" alt="ER-Diagram"></p>
+<p>In Cassandra gibt die Art und Weise wie wir Daten holen unsere Datenstruktur vor. Das heißt wir müssen uns vorher Gedanken machen, wie wir unsere Daten brauchen, da eine Änderung des holens meistens eine Änderung des Datenmodells nach sich zieht.</p>
+<h2 id="auslegung-unserer-queries">Auslegung unserer <code>Queries</code></h2>
+<h3 id="f%C3%A4lle">Fälle</h3>
+<p>Wir haben mehrere Fälle in denen wir Daten aus der Datenbank brauchen:</p>
+<ul>
+<li>Ein Nutzer meldet sich an</li>
+<li>Ein Nutzer will alle Subforen haben</li>
+<li>Ein Nutzer will alle Topics in einem Subforum haben</li>
+<li>Ein Nutzer will alle Posts eines Topics haben</li>
+<li>Ein Nutzer will alle Posts eines Autors haben</li>
+</ul>
+<h2 id="was-brauchen-wir-in-den-jeweiligen-f%C3%A4llen">Was brauchen wir in den jeweiligen Fällen?</h2>
+<h2 id="ein-nutzer-meldet-sich-an">Ein Nutzer meldet sich an:</h2>
+<p>Wir brauchen seinen Nutzernamen und sein Passwort um die Logindaten zu überprüfen. Das heißt wir sollten eine Tabelle haben, in der nach dem <code>Nutzernamen</code> Partitioniert wird.</p>
+<h2 id="ein-nutzer-will-alle-subforen-haben">Ein Nutzer will alle Subforen haben:</h2>
+<p>Wir brauchen alle Subforen. Hier ist nichts zu beachten.</p>
+<h2 id="ein-nutzer-will-alle-topics-in-einem-subforum-haben">Ein Nutzer will alle Topics in einem Subforum haben:</h2>
+<p>Wir brauchen alle Topics aus einem Subforum. Das heißt wir sollten eine Tabelle haben, wo wir nach dem <code>Primary Key</code> des dazugehörigen Subforum partitionieren. Nachher sollen die Topics in Chronologischer Reihenfolge dargestellt werden. Also sortieren wir innerhalb einer Partition nach dem <code>Creation Date</code>. Das wird dann unser <code>Clustering Key</code></p>
+<h2 id="ein-nutzer-will-alle-posts-eines-topics-haben">Ein Nutzer will alle Posts eines Topics haben:</h2>
+<p>Wir brauchen alle Posts aus einem Topic. Das heißt wir Partitionieren hier, ähnlich wie bei den Topics, nach dem <code>Primary Key</code> des Topics. Auch hier sollen die Posts nachher Chronologisch dargestellt werden. Also nutzen wir auch hier das Attribut <code>Creation Date</code> als <code>Clustering Key</code>.</p>
+<h2 id="ein-nutzer-will-alle-posts-eines-autors-haben">Ein Nutzer will alle Posts eines Autors haben:</h2>
+<p>Dies ist sehr ähnlich der Posts nach Topic Tabelle, mit dem Unterschied, dass wir nach dem <code>Primary Key</code> des Authors partitionieren und nicht nach dem des Topic. Auch hier sollen die Ergebnisse Chronologisch zurückgegeben werden.</p>
+<h1 id="logische-modell">Logische Modell</h1>
+<p>Für jede Abfrage die wir unterstützen wollen, erstellen wir uns eine Tabelle.</p>
+<p>In der Notation ist der Partition Key mit eine <code>(K)</code> gekennzeichnet.<br>
+Und eine Clustering Column mit eine <code>(C &lt;richtung&gt;)</code>.</p>
+<h2 id="ein-nutzer-meldet-sich-an">Ein Nutzer meldet sich an:</h2>
+<p><img src="images/users_by_username.jpg" alt="users_by_username"></p>
+<h2 id="ein-nutzer-will-alle-subforen-haben">Ein Nutzer will alle Subforen haben:</h2>
+<p><img src="images/subforums_by_title.jpg" alt="subforums_by_title"></p>
+<h2 id="ein-nutzer-will-alle-topics-in-einem-subforum-haben">Ein Nutzer will alle Topics in einem Subforum haben:</h2>
+<p><img src="images/topics_by_subforum.jpg" alt="topics_by_subforum"></p>
+<h2 id="ein-nutzer-will-alle-posts-eines-topics-haben">Ein Nutzer will alle Posts eines Topics haben:</h2>
+<p><img src="images/posts_by_topic.jpg" alt="posts_by_topic"></p>
+<h2 id="ein-nutzer-will-alle-posts-eines-autors-haben">Ein Nutzer will alle Posts eines Autors haben:</h2>
+<p><img src="images/posts_by_author.jpg" alt="posts_by_author"></p>
+<h1 id="erstellung-der-tabellen-und-des-keyspace">Erstellung der Tabellen und des Keyspace</h1>
+<p>Zunächst erstellen wir uns einen <code>Keyspace</code> für unsere Anwendung. In dem <code>Keyspace</code> können wir dann alle <code>Tabellen</code> erstellen:</p>
+<pre class="hljs"><code><div>CREATE KEYSPACE forum WITH replication = {'class': 'SimpleStrategy', 'replication_factor': &lt;node_anzahl&gt;};
+
+USE forum;
+</div></code></pre>
+<p>Hierbei ist zu beachten, dass man für die <code>node_anzahl</code> die Anzahl der Replikationen angibt. Also auf wievielen <code>Nodes</code> die gleiche Reihe gespeichert werden soll.</p>
+<h2 id="ein-nutzer-meldet-sich-an">Ein Nutzer meldet sich an:</h2>
+<pre class="hljs"><code><div>CREATE table users_by_username
+(
+  username text PRIMARY KEY,
+  password text,
+  firstName text,
+  name text,
+);
+</div></code></pre>
+<h2 id="ein-nutzer-will-alle-subforen-haben">Ein Nutzer will alle Subforen haben:</h2>
+<pre class="hljs"><code><div>CREATE table subforums_by_title
+(
+  title text PRIMARY KEY
+);
+</div></code></pre>
+<h2 id="ein-nutzer-will-alle-topics-in-einem-subforum-haben">Ein Nutzer will alle Topics in einem Subforum haben:</h2>
+<pre class="hljs"><code><div>CREATE table topics_by_subforum
+(
+  SubforumTitle text,
+  CreationDate timestamp,
+  TopicID int,
+  Title text,
+  PRIMARY KEY ((SubforumTitle), CreationDate)
+)
+WITH comment = 'Finds Topics by subforum'
+AND CLUSTERING ORDER BY (CreationDate DESC);
+</div></code></pre>
+<h2 id="ein-nutzer-will-alle-posts-eines-topics-haben">Ein Nutzer will alle Posts eines Topics haben:</h2>
+<pre class="hljs"><code><div>CREATE table posts_by_topic
+(
+  TopicID int,
+  CreationDate timestamp,
+  PostID int,
+  AuthorUsername text,
+  Header text,
+  Body text,
+  PRIMARY KEY ((TopicID), CreationDate)
+)
+WITH comment = 'Finds all Posts of Topic'
+AND CLUSTERING ORDER BY (CreationDate ASC);
+</div></code></pre>
+<h2 id="ein-nutzer-will-alle-posts-eines-autors-haben">Ein Nutzer will alle Posts eines Autors haben:</h2>
+<pre class="hljs"><code><div>CREATE table posts_by_author
+(
+  AuthorUsername text,
+  CreationDate timestamp,
+  PostID int,
+  TopicID int,
+  Header text,
+  Body text,
+  PRIMARY KEY ((AuthorUsername), CreationDate)
+)
+WITH comment = 'Finds all posts of a author'
+AND CLUSTERING ORDER BY (CreationDate DESC);
+</div></code></pre>
+<p>Damit haben wir jetzt alle Tabellen erstellt.</p>
+<p>Wie sehen jetzt also unsere Queries in <code>CQL</code> aus?</p>
+<h1 id="queries">Queries</h1>
+<p>Beim Start der Anwendung soll sich der Benutzer anmelden. Dafür schickt er uns seinen <code>Username</code> und sein <code>Password</code> und wir holen uns seine Daten aus der Datenbank und vergleichen diese:</p>
+<pre class="hljs"><code><div>SELECT username, password FROM users_by_username WHERE username='&lt;username&gt;'
+</div></code></pre>
+<p>Ergebnis:</p>
+<pre class="hljs"><code><div> username  | password
+-----------+-----------
+ username1 | password1
+</div></code></pre>
+<hr>
+<p>Dannach wollen wir eine Liste aller Subforen anzeigen. Dafür brauchen wir alle Subforen und deren Titel:</p>
+<pre class="hljs"><code><div>SELECT title FROM subforums_by_title;
+</div></code></pre>
+<p>Ergebnis:</p>
+<pre class="hljs"><code><div> title
+------------
+ Subforum 1
+ Subforum 5
+ Subforum 6
+ Subforum 3
+ Subforum 2
+ Subforum 4
+</div></code></pre>
+<hr>
+<p>Jetzt müssen wir, wenn der Nutzer in ein Subforum geht (z.B. <code>Subforum 2</code>) alle Topics anzeigen:</p>
+<pre class="hljs"><code><div>SELECT topicid, title, creationDate from topics_by_subforum WHERE subforumtitle = 'Subforum 2';
+</div></code></pre>
+<p>Ergebnis:</p>
+<pre class="hljs"><code><div> topicid | title           | creationdate
+---------+-----------------+---------------------------------
+      11 | Topic 1 Forum 2 | 2020-09-23 07:34:16.371000+0000
+      10 | Topic 5 Forum 2 | 2020-09-23 07:34:16.369000+0000
+       9 | Topic 4 Forum 2 | 2020-09-23 07:34:16.367000+0000
+       8 | Topic 3 Forum 2 | 2020-09-23 07:34:16.364000+0000
+       7 | Topic 2 Forum 2 | 2020-09-23 07:34:16.362000+0000
+       6 | Topic 1 Forum 2 | 2020-09-23 07:34:16.360000+0000
+</div></code></pre>
+<hr>
+<p>Jetzt öffnet der Nutzer ein Topic (z.B: Topic <code>6</code>) und will alle Posts innerhalb dieses Topics lesen:</p>
+<pre class="hljs"><code><div>SELECT creationdate, authorusername, header, body FROM posts_by_topic WHERE topicid = 6;
+</div></code></pre>
+<p>Ergebnis:</p>
+<pre class="hljs"><code><div> creationdate                    | authorusername | header          | body
+---------------------------------+----------------+-----------------+--------------
+ 2020-09-23 07:40:19.607000+0000 |      username1 |  Post 11 Header | Post 11 Body
+ 2020-09-23 07:40:20.858000+0000 |      username3 | Post 112 Header | Post 12 Body
+</div></code></pre>
+<hr>
+<p>Wenn der Nutzer jetzt z.B. auf den Nutzernamen in einem Post clickt, soll er zum Profil geleitet werden. Also schicken wir ihm die Informationen des Posters:</p>
+<pre class="hljs"><code><div>SELECT username, firstname, name FROM users_by_username WHERE username = 'username2';
+</div></code></pre>
+<p>Ergebnis:</p>
+<pre class="hljs"><code><div> username  | firstname | name
+-----------+-----------+------
+ username2 |      User |  Two
+</div></code></pre>
+<hr>
+<p>Und wir wollen im Profil alle Posts des Nutzers anzeigen lassen:</p>
+<pre class="hljs"><code><div>SELECT header, body, creationDate, topicID FROM posts_by_author WHERE authorUsername='username2';
+</div></code></pre>
+<p>Ergebnis:</p>
+<pre class="hljs"><code><div> header         | body         | creationdate                    | topicid
+----------------+--------------+---------------------------------+---------
+ Post 10 Header | Post 10 Body | 2020-09-23 07:40:55.714000+0000 |       5
+  Post 8 Header |  Post 8 Body | 2020-09-23 07:40:55.710000+0000 |       4
+  Post 5 Header |  Post 5 Body | 2020-09-23 07:40:55.702000+0000 |       3
+  Post 2 Header |  Post 2 Body | 2020-09-23 07:40:55.695000+0000 |       1
+</div></code></pre>
+
+</body>
+</html>

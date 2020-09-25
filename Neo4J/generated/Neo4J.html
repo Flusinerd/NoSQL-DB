@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Neo4J.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="neo4j">Neo4J</h1>
+<p>Bei einer Graph Datenbank werden die Relationen zwischen den Daten als genau so wichtig wie die Daten selber angesehen.
+Die Daten selber werden ähnlich einer Dokument Datenbank ohne vorher definierte Schemas oder Modelle gespeichert.</p>
+<p>Die Vorteile einer Graph Datenbank liegen darin, dass man zusammenhängende Daten sehr schnell bekommt und man somit von Node zu Node springen kann.
+Dabei ist die Zugriffszeit zwischen zwei Nodes immer konstant. Es werden keine zeitaufwendige JOIN Operationen benötigt, da die Relationen direkt mit den Daten abgespeichert werden.</p>
+<p>Die Vorgehensweise beim holen von Daten ist, dass man bei einem Start Node startet und von dieser Node aus sich immer mehr Daten entlang des Graphen holt.
+Um nachher APIs zu für Graph basierte Daten zu erstellen bietet sich <a href="https://graphql.org/"><code>GraphQL</code></a> an.</p>
+<h2 id="property-graph-model">Property Graph Model</h2>
+<p>Neo4J basiert auf dem <code>Property Graph Model</code>. Das bedeutet, dass es <code>Nodes</code>, <code>Relationships</code> und <code>Properties</code> gibt.
+Bei <code>Nodes</code> handelt es sich um die Entitäten in einem Graph. Sie enthalten eine beliebige Anzahl an <code>Attributes</code> (key-value Paare) die sich <code>Properties</code> nennen.
+<code>Nodes</code> können mit <code>Labels</code> versehen werden um ihnen verschiedene Rollen innerhalb des Datensatzes zu geben. Außerdem werden <code>Labels</code> genutzt um <code>Nodes</code> mit metadata zu versehen (<code>Index</code> oder <code>Contrainst</code>).</p>
+<p><code>Relationships</code> sind dabei Verbindungen zwischen zwei <code>Nodes</code>. Dabei sind <code>Relations</code> immer gerichtet und mit einem Namen versehen.<br>
+Beispiel für eine Relation:</p>
+<p>Employee <code>WORKS_FOR</code> Company</p>
+<p><code>Relationships</code> haben <em>IMMER</em> eine <code>Direction</code>, einen <code>Type</code> eine <code>Start Node</code> und eine <code>End Node</code>.<br>
+Auch <code>Relationships</code> können <code>Properties</code> haben, genau wie bei <code>Nodes</code>. Dies sind meistens quantitative <code>Properties</code>, wie Entfernung, Kosten, Wichtungen...
+Zwei gleiche <code>Nodes</code> können beliebig viele <code>Relationships</code> teilen ohne das dabei die Performance verändert wird.<br>
+Auch wenn <code>Relationships</code> immer eine <code>Direction</code> haben, kann man in beide Richtungen wandern.</p>
+<p><img src="https://dist.neo4j.com/wp-content/uploads/property_graph_elements.jpg" alt="Model"></p>
+<pre class="hljs"><code><div>docker run -p 7474:7474 -p 7687:7687 -d --env=NEO4J_AUTH=none neo4j
+</div></code></pre>
+<p>commands start with <code>:</code>
+cypher commands do not</p>
+<p>Node -&gt; Propperties (Key-Value)
+Grouping Nodes with Labels</p>
+<pre class="hljs"><code><div>CREATE (ee:Person { name: &quot;Emil&quot;, from: &quot;Sweden&quot;, age: 20})
+</div></code></pre>
+<p>Label: <code>Person</code>
+Data: <code>{...}</code></p>
+<pre class="hljs"><code><div>MATCH (emil:Person) WHERE emil.name=&quot;Emil&quot; RETURN emil;
+</div></code></pre>
+<pre class="hljs"><code><div>MATCH (ee:Person) WHERE ee.name = &quot;Emil&quot;
+
+CREATE (js:Person { name: &quot;Johan&quot;, from: &quot;Sweden&quot;, learn: &quot;surfing&quot; }),
+(ir:Person { name: &quot;Ian&quot;, from: &quot;England&quot;, title: &quot;author&quot; }),
+(rvb:Person { name: &quot;Rik&quot;, from: &quot;Belgium&quot;, pet: &quot;Orval&quot; }),
+(ally:Person { name: &quot;Allison&quot;, from: &quot;California&quot;, hobby: &quot;surfing&quot; }),
+
+(ee)-[:KNOWS {since: 2001}]-&gt;(js),
+(ee)-[:KNOWS {rating: 5}]-&gt;(ir),
+(js)-[:KNOWS]-&gt;(ir),(js)-[:KNOWS]-&gt;(rvb),
+(ir)-[:KNOWS]-&gt;(js),(ir)-[:KNOWS]-&gt;(ally),
+(rvb)-[:KNOWS]-&gt;(ally)
+</div></code></pre>
+<p>Find all friends of emil</p>
+<pre class="hljs"><code><div>MATCH (ee:Person)-[:KNOWS]-(friends)
+WHERE ee.name = &quot;Emil&quot; RETURN ee, friends
+</div></code></pre>
+<p>Find someone to surf together with Johan</p>
+<pre class="hljs"><code><div>MATCH (js:Person)-[:KNOWS]-()-[:KNOWS]-(surfer)
+WHERE js.name = &quot;Johan&quot; AND surfer.hobby = &quot;surfing&quot;
+RETURN DISTINCT surfer
+</div></code></pre>
+<p>Updating:</p>
+<p>First find with match, then Set</p>
+<pre class="hljs"><code><div>MATCH (p:Person {name: 'Jennifer'})
+SET p.birthdate = date('1980-01-01')
+RETURN p
+</div></code></pre>
+<p>Relations:</p>
+<pre class="hljs"><code><div>-[&lt;label&gt;:&lt;Relation_label&gt;]-&gt;(&lt;result_label&gt;:&lt;Node_Label&gt;)
+-[&lt;label&gt;:&lt;Relation_label&gt;]-(&lt;result_label&gt;:&lt;Node_Label&gt;)
+-[&lt;label&gt;:&lt;Relation_label&gt;]&lt;-&gt;(&lt;result_label&gt;:&lt;Node_Label&gt;)
+</div></code></pre>
+<h2 id="movie-example">Movie example</h2>
+<p>Holen uns Tom Hanks</p>
+<pre class="hljs"><code><div>:play movie-graph
+
+MATCH (tom:Person {name: 'Tom Hanks'})
+RETURN tom
+</div></code></pre>
+<p>Alle seine Filme</p>
+<pre class="hljs"><code><div>MATCH (tom:Person {name: 'Tom Hanks'})-[r:ACTED_IN]-&gt;(movie:Movie)
+RETURN tom, r, movie
+</div></code></pre>
+<p>Alle seine Kollegen</p>
+<pre class="hljs"><code><div>MATCH (tom:Person {name: 'Tom Hanks'})-[:ACTED_IN]-&gt;(:Movie)&lt;-[:ACTED_IN]-(coActor:Person)
+RETURN coActor.name
+</div></code></pre>
+<p>Alle Kollegen seiner Kollegen</p>
+<pre class="hljs"><code><div>MATCH (tom:Person {name: 'Tom Hanks'})-[:ACTED_IN]-&gt;(movie1:Movie)&lt;-[:ACTED_IN]-(coActor:Person)-[:ACTED_IN]-&gt;(movie2:Movie)&lt;-[:ACTED_IN]-(coCoActor:Person)
+WHERE tom &lt;&gt; coCoActor
+AND NOT (tom)-[:ACTED_IN]-&gt;(:Movie)&lt;-[:ACTED_IN]-(coCoActor)
+RETURN coCoActor.name
+</div></code></pre>
+<p><code>WHERE tom &lt;&gt; coCoActor</code> verhindert, dass Tom selber wieder gefunden wird.<br>
+Es tauchen welche doppelt auf, da es teilweise mehrere Pfade zu den Kollegen der Kollegen gibt.<br>
+Also sortieren wir mal nach der häufigkeit (Meisten gemeinsamen Kollegen) und zeigen uns die ersten 5 an.</p>
+<pre class="hljs"><code><div>MATCH (tom:Person {name: 'Tom Hanks'})-[:ACTED_IN]-&gt;(movie1:Movie)&lt;-[:ACTED_IN]-(coActor:Person)-[:ACTED_IN]-&gt;(movie2:Movie)&lt;-[:ACTED_IN]-(coCoActor:Person)
+WHERE tom &lt;&gt; coCoActor
+AND NOT (tom)-[:ACTED_IN]-&gt;(:Movie)&lt;-[:ACTED_IN]-(coCoActor)
+RETURN coCoActor.name, count(coCoActor) as frequency
+ORDER BY frequency DESC
+LIMIT 5
+</div></code></pre>
+<p>Tom Cruise ist zb sehr häufig da. Also suchen wir jetzt mal nach einem Mittelmann, der vermitteln könnte.</p>
+<pre class="hljs"><code><div>MATCH (tom:Person {name: 'Tom Hanks'})-[:ACTED_IN]-&gt;(movie1:Movie)&lt;-[:ACTED_IN]-(coActor:Person)-[:ACTED_IN]-&gt;(movie2:Movie)&lt;-[:ACTED_IN]-(cruise:Person {name: 'Tom Cruise'})
+RETURN tom, movie1, coActor, movie2, cruise
+</div></code></pre>
+<h2 id="indexes">Indexes</h2>
+<p>Ein <code>Index</code> ist eine redundante Kopie von Daten um schneller suchen zu können.  Dabei wird die Schreibgeschwindigkeit verringert und es müssen mehr Daten gespeichert werden. Also muss gut überlegt werden, auf welche <code>Properties</code> man wirklich einen <code>Index</code> braucht.
+Sobald ein <code>Index</code> angelegt wurde, kümmert sich Neo4J automatisch darum, diesen aktuell zu halten.</p>
+<p>Es gibt 2 Arten von <code>Indexes</code>:</p>
+<ul>
+<li><code>single-property Index</code></li>
+<li><code>composite Index</code></li>
+</ul>
+<p>Ein <code>single-property Index</code> ist dabei nur auf eine <code>Property</code> angelegt. Der <code>composite Index</code> hingegen auf mehr als eine <code>Property</code>.</p>
+<p>Wenn man einen <code>Index</code> anlegt, sollte man diesem einen <code>index name</code> geben. Sonst wird er automatisch generiert. Der <code>index name</code> muss <code>UNIQUE</code> sein. Er darf nicht für einen andere <code>Index</code> oder <code>Constraint</code> genutzt werden.</p>
+<h3 id="syntax">Syntax:</h3>
+<p>Für einen <code>single-property Index</code></p>
+<pre class="hljs"><code><div>CREATE INDEX [index_name]
+FOR (n:LabelName)
+ON (n.propertyName)
+</div></code></pre>
+<p>Oder einen <code>composite Index</code></p>
+<pre class="hljs"><code><div>CREATE INDEX [index_name]
+FOR (n:LabelName)
+ON (n.propertyName_1,
+    n.propertyName_2,
+    …
+    n.propertyName_n)
+</div></code></pre>
+<h3 id="index-l%C3%B6schen">Index löschen:</h3>
+<p>Mit</p>
+<pre class="hljs"><code><div>DROP INDEX index_name
+</div></code></pre>
+<p>können wir einen <code>Index</code> wieder löschen.</p>
+<h3 id="alle-indexes-anzeigen-lassen">Alle <code>Indexes</code> anzeigen lassen:</h3>
+<pre class="hljs"><code><div>CALL db.indexes;
+</div></code></pre>
+<h2 id="constraints">Constraints</h2>
+<p>Es gibt 4 <code>Constraints</code>:</p>
+<ul>
+<li>Unique node property constraints</li>
+<li>Node property existence constraints (Enterprise Edition only)</li>
+<li>Relationships property existence constraints (Enterprise Edition only)</li>
+<li>Node key constraints (Enterprise Edition only)</li>
+</ul>
+<h3 id="unique-node-property-constraint">Unique node property constraint:</h3>
+<p>Eine <code>Property</code> aller <code>Nodes</code> eines <code>Labels</code> müssen <code>UNIQUE</code> sein.
+Das heißt zwei <code>Nodes</code> mit gleichem <code>Label</code> dürfen bei der selben <code>Property</code> nicht den selben Wert haben. <code>Nodes</code> ohne die <code>Property</code> sind von dieser Regel ausgenommen.</p>
+<h3 id="syntax">Syntax</h3>
+<pre class="hljs"><code><div>CREATE CONSTRAINT [CONSTRAINT NAME] 
+ON (n:LabelName) 
+ASSERT n.propertyName IS UNIQUE
+</div></code></pre>
+<p>Der <code>Constraint Name</code> ist optional, sollte aber gesetzt werden. Falls dieser nicht gesetzt wird, wird er automatisch generiert. Der <code>Constraint</code> Name muss UNIQUE sein. Er darf nicht von einem bereits existierenden <code>Index</code> oder <code>Constraint</code> genutzt werden.</p>
+<h3 id="um-einen-constraint-wieder-zu-l%C3%B6schen">Um einen <code>Constraint</code> wieder zu löschen:</h3>
+<pre class="hljs"><code><div>DROP CONSTRAINT constraint_name
+</div></code></pre>
+<h3 id="alle-constraints-anzeigen-lassen">Alle Constraints anzeigen lassen</h3>
+<p>Analog zu den <code>Indexes</code></p>
+<pre class="hljs"><code><div>CALL db.constraints;
+</div></code></pre>
+<h3 id="hinweis-zu-constraints-und-indexes">Hinweis zu Constraints und Indexes</h3>
+<p>Wenn wir einen Constraint anlegen, dann wird automatisch ein <code>single-property Index</code> auf die <code>Property</code> erstellt.</p>
+
+</body>
+</html>

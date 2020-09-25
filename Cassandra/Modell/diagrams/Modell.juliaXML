@@ -1,0 +1,155 @@
+<juliaProjekt juliaProjektHoehe="4687.5" juliaProjektName="Forum Cassandra" juliaProjektSpeicherOrtBild="D:\Downloads" juliaProjektWeite="4687.5" juliaProjektZoomAnzahl="2">
+    <juliaProjektEntitaeten>
+        <juliaEntitaet juliaEntitaetName="User" juliaEntitaetSchwach="false">
+            <juliaKomponente>
+                <juliaGrafischeKomponente juliaHoehe="20.400000000000006" juliaWeite="28.539843750000003" juliaXKoordinate="426.0" juliaYKoordinate="337.0"/>
+                <juliaKinder>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Username" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="true">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="69.291015625" juliaXKoordinate="257.0" juliaYKoordinate="257.0"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Password" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="65.951171875" juliaXKoordinate="222.0" juliaYKoordinate="323.0"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="FirstName" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="32.4609375" juliaWeite="70.2890625" juliaXKoordinate="389.0" juliaYKoordinate="215.0"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Name" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="32.4609375" juliaWeite="48.193359375" juliaXKoordinate="294.0" juliaYKoordinate="429.0"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                </juliaKinder>
+            </juliaKomponente>
+        </juliaEntitaet>
+        <juliaEntitaet juliaEntitaetName="Post" juliaEntitaetSchwach="false">
+            <juliaKomponente>
+                <juliaGrafischeKomponente juliaHoehe="20.400000000000006" juliaWeite="27.4921875" juliaXKoordinate="449.0" juliaYKoordinate="654.0"/>
+                <juliaKinder>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Header" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="54.4140625" juliaXKoordinate="340.0" juliaYKoordinate="688.0"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Body" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="42.783203125" juliaXKoordinate="440.32" juliaYKoordinate="727.0400000000001"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="CreationDate" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="85.638671875" juliaXKoordinate="520.96" juliaYKoordinate="726.4000000000002"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="PostID" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="true">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="50.517578125" juliaXKoordinate="323.20000000000005" juliaYKoordinate="626.5600000000001"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                </juliaKinder>
+            </juliaKomponente>
+        </juliaEntitaet>
+        <juliaEntitaet juliaEntitaetName="Sub Forum" juliaEntitaetSchwach="false">
+            <juliaKomponente>
+                <juliaGrafischeKomponente juliaHoehe="20.400000000000006" juliaWeite="69.23671875000001" juliaXKoordinate="882.0" juliaYKoordinate="324.0"/>
+                <juliaKinder>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Title" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="true">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="38.44140625" juliaXKoordinate="947.0" juliaYKoordinate="262.0"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                </juliaKinder>
+            </juliaKomponente>
+        </juliaEntitaet>
+        <juliaEntitaet juliaEntitaetName="Topic" juliaEntitaetSchwach="false">
+            <juliaKomponente>
+                <juliaGrafischeKomponente juliaHoehe="20.400000000000006" juliaWeite="34.58671875" juliaXKoordinate="893.0" juliaYKoordinate="626.0"/>
+                <juliaKinder>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="Title" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="38.44140625" juliaXKoordinate="985.6" juliaYKoordinate="595.2"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="CreationDate" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="false">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="32.4609375" juliaWeite="86.138671875" juliaXKoordinate="933.7600000000001" juliaYKoordinate="673.2800000000002"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                    <juliaAttribut juliaAttributBerechnet="false" juliaAttributBezeichnung="TopicID" juliaAttributMultiValue="false" juliaAttributPrimaerschluessel="true">
+                        <juliaKomponente>
+                            <juliaGrafischeKomponente juliaHoehe="33.0" juliaWeite="56.4296875" juliaXKoordinate="822.4000000000001" juliaYKoordinate="686.7200000000004"/>
+                            <juliaKinder/>
+                        </juliaKomponente>
+                    </juliaAttribut>
+                </juliaKinder>
+            </juliaKomponente>
+        </juliaEntitaet>
+    </juliaProjektEntitaeten>
+    <juliaProjektBeziehungen>
+        <juliaBeziehung juliaBeziehungVerb="has">
+            <juliaTeilnehmerDerBeziehung>
+                <juliaBeziehungsVerbinder juliaBeziehungsVerbinderSchwach="false" juliaBeziehungsVerbinderZeigeKonnektivitaet="false">
+                    <juliaBeziehungsteilnehmer juliaBeziehungsteilnehmerBeziehungstyp="false" juliaBeziehungsteilnehmerEntitaet="Sub Forum" juliaBeziehungsteilnehmerKardinalitaet="true">
+                        <juliaKonnektivitaet juliaKonnektivitaetMax="1" juliaKonnektivitaetMin="1"/>
+                    </juliaBeziehungsteilnehmer>
+                </juliaBeziehungsVerbinder>
+                <juliaBeziehungsVerbinder juliaBeziehungsVerbinderSchwach="false" juliaBeziehungsVerbinderZeigeKonnektivitaet="false">
+                    <juliaBeziehungsteilnehmer juliaBeziehungsteilnehmerBeziehungstyp="true" juliaBeziehungsteilnehmerEntitaet="Topic" juliaBeziehungsteilnehmerKardinalitaet="true">
+                        <juliaKonnektivitaet juliaKonnektivitaetMax="1" juliaKonnektivitaetMin="1"/>
+                    </juliaBeziehungsteilnehmer>
+                </juliaBeziehungsVerbinder>
+            </juliaTeilnehmerDerBeziehung>
+            <juliaGrafischeKomponente juliaHoehe="40.0" juliaWeite="35.9765625" juliaXKoordinate="890.0" juliaYKoordinate="476.0"/>
+            <juliaAttributeUndKommentareDerBeziehung/>
+        </juliaBeziehung>
+        <juliaBeziehung juliaBeziehungVerb="belongs to">
+            <juliaTeilnehmerDerBeziehung>
+                <juliaBeziehungsVerbinder juliaBeziehungsVerbinderSchwach="false" juliaBeziehungsVerbinderZeigeKonnektivitaet="false">
+                    <juliaBeziehungsteilnehmer juliaBeziehungsteilnehmerBeziehungstyp="true" juliaBeziehungsteilnehmerEntitaet="Post" juliaBeziehungsteilnehmerKardinalitaet="true">
+                        <juliaKonnektivitaet juliaKonnektivitaetMax="1" juliaKonnektivitaetMin="1"/>
+                    </juliaBeziehungsteilnehmer>
+                </juliaBeziehungsVerbinder>
+                <juliaBeziehungsVerbinder juliaBeziehungsVerbinderSchwach="false" juliaBeziehungsVerbinderZeigeKonnektivitaet="false">
+                    <juliaBeziehungsteilnehmer juliaBeziehungsteilnehmerBeziehungstyp="false" juliaBeziehungsteilnehmerEntitaet="Topic" juliaBeziehungsteilnehmerKardinalitaet="false">
+                        <juliaKonnektivitaet juliaKonnektivitaetMax="1" juliaKonnektivitaetMin="1"/>
+                    </juliaBeziehungsteilnehmer>
+                </juliaBeziehungsVerbinder>
+            </juliaTeilnehmerDerBeziehung>
+            <juliaGrafischeKomponente juliaHoehe="40.0" juliaWeite="113.203125" juliaXKoordinate="632.0" juliaYKoordinate="633.0"/>
+            <juliaAttributeUndKommentareDerBeziehung/>
+        </juliaBeziehung>
+        <juliaBeziehung juliaBeziehungVerb="is author">
+            <juliaTeilnehmerDerBeziehung>
+                <juliaBeziehungsVerbinder juliaBeziehungsVerbinderSchwach="false" juliaBeziehungsVerbinderZeigeKonnektivitaet="false">
+                    <juliaBeziehungsteilnehmer juliaBeziehungsteilnehmerBeziehungstyp="false" juliaBeziehungsteilnehmerEntitaet="User" juliaBeziehungsteilnehmerKardinalitaet="false">
+                        <juliaKonnektivitaet juliaKonnektivitaetMax="1" juliaKonnektivitaetMin="1"/>
+                    </juliaBeziehungsteilnehmer>
+                </juliaBeziehungsVerbinder>
+                <juliaBeziehungsVerbinder juliaBeziehungsVerbinderSchwach="false" juliaBeziehungsVerbinderZeigeKonnektivitaet="false">
+                    <juliaBeziehungsteilnehmer juliaBeziehungsteilnehmerBeziehungstyp="true" juliaBeziehungsteilnehmerEntitaet="Post" juliaBeziehungsteilnehmerKardinalitaet="true">
+                        <juliaKonnektivitaet juliaKonnektivitaetMax="1" juliaKonnektivitaetMin="1"/>
+                    </juliaBeziehungsteilnehmer>
+                </juliaBeziehungsVerbinder>
+            </juliaTeilnehmerDerBeziehung>
+            <juliaGrafischeKomponente juliaHoehe="40.0" juliaWeite="92.484375" juliaXKoordinate="398.0" juliaYKoordinate="498.0"/>
+            <juliaAttributeUndKommentareDerBeziehung/>
+        </juliaBeziehung>
+    </juliaProjektBeziehungen>
+    <juliaProjektKommentare/>
+</juliaProjekt>

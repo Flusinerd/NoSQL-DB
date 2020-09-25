@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MongoDB.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Auch hier nutze ich Docker um eine MongoDB Instanz zu starten. Anschließend öffne ich über das Docker Dashboard wieder das Terminal des Containers.</p>
+<pre class="hljs"><code><div>docker run --name mongo-test -d mongo
+</div></code></pre>
+<p>In dem Terminal des Containers geben wir <code>mongo</code> ein um die MongoDB Shell zu öffnen.</p>
+<pre class="hljs"><code><div>mongo
+</div></code></pre>
+<p>MongoDB nutzt sogenannte <code>Dokumente</code> um Daten abzuspeichern. Sie sind vergleichbar mit den Zeilen in einer Relationalen Datenbank, jedoch mit dem Unterschied das sie nicht in ein Schema gezwungen werden, wie es bei Relationalen Datenbanken durch die Spalten der Fall ist. Das heißt ein Dokument ist quasi wie ein <code>JSON</code>, <code>YAML</code> oder <code>XML</code> Objekt, das in der Struktur komplett frei wählbar ist. Ein Dokument ist also eine Sammlung an <code>Key-Value</code> Paaren, wobei der Wert eines solchen Paares alles mögliche annehmen kann. Man kann z.B. <code>BLOB</code>s (Binäre Daten), Daten in allen möglichen Dateiformaten, aber auch auch weitere <code>Key-Value</code> Paare in den Wert eines <code>Key-Value</code> Paar speichern. Das erlaubt es z.B. verschachtelte Objekte zu erschaffen und bietet eine sehr große Flexibilität.</p>
+<p>Mehrere Dokumente können in eine <code>Collection</code> zusammengefasst werden. Dies entspricht dann quasi der Tabelle, welche mehrere Zeilen (hier <code>Dokumente</code>) enthält.</p>
+<p>Als erstes schauen wir uns das alt bekannte Beispiel der Musik Playlist an. Wir haben wieder mehrere Songs, die zu einer Sammlung zusammengefasst werden können. Jeder Song hat wieder einen <code>SongName</code> ein <code>year</code> und einen <code>singer</code>. Das erstellen eines Primary Keys ist hier nicht notwendig, da MongoDB jedem Dokument eine eindeutige ID zuweist. Diese findet man später als <code>_id</code> im Dokument wieder.</p>
+<p>Zunächst erstellen wir unsere Collection</p>
+<pre class="hljs"><code><div>db.createCollection(<span class="hljs-string">"Music_Playlist"</span>)
+</div></code></pre>
+<p>Dann speichern wir uns die Collection in eine Variable, sodass wir statt <code>db.Music_Playlist</code> einfach <code>coll</code> nutzen können. Wir können uns fast alles in Variablen schreiben. Hier sieht man sehr gut, das die Mongo Shell sehr ähnlich einer NodeJS shell ist.</p>
+<pre class="hljs"><code><div>coll = db.Music_Playlist
+</div></code></pre>
+<p>Anschließend fügen wir ein Dokument in unsere Collection ein. Das geht mit <code>coll.insertOne(&lt;Dokument&gt;)</code>. Hierbei nutze wir das <code>JSON</code> Format.</p>
+<pre class="hljs"><code><div>coll.insertOne(
+  { SongName: <span class="hljs-string">'Song 1 Name'</span>, year: <span class="hljs-number">2020</span>, singer: <span class="hljs-string">'Singer 1 Name'</span> }
+)
+</div></code></pre>
+<p>Jetzt können wir mit der <code>find()</code> Methode uns alle Dokumente aus der Collection holen.</p>
+<pre class="hljs"><code><div>coll.find()
+</div></code></pre>
+<p>Mit <code>insertMany(&lt;[Dokumente]&gt;)</code> können wir auch mehrere Dokumente anlegen. Dazu übergeben wir der Funktion ein Array aus Dokumenten.</p>
+<pre class="hljs"><code><div>coll.insertMany(
+  [
+    { SongName: <span class="hljs-string">'Song 2 Name'</span>, year: <span class="hljs-number">2020</span>, singer: <span class="hljs-string">'Singer 2 Name'</span> },
+    { SongName: <span class="hljs-string">'Song 3 Name'</span>, year: <span class="hljs-number">2015</span>, singer: <span class="hljs-string">'Singer 3 Name'</span> },
+    { SongName: <span class="hljs-string">'Song 4 Name'</span>, year: <span class="hljs-number">2010</span>, singer: <span class="hljs-string">'Singer 4 Name'</span> },
+    { SongName: <span class="hljs-string">'Song 5 Name'</span>, year: <span class="hljs-number">2000</span>, singer: <span class="hljs-string">'Singer 5 Name'</span> },
+  ]
+)
+</div></code></pre>
+<p>Der erste Parameter der <code>find()</code> Methode erlaubt es uns die Dokumente zu filtern. Ähnlich dem <code>WHERE</code> Keyword aus SQL. Wir übergeben ein Object an  die <code>find()</code> Methode, das ein oder mehrere Key-Value Paare hat.
+Das Beispiel unten wäre äquivalent zu <code>WHERE year=2020</code>. Wenn wir zwei Key-Value Paare übergeben würden. Dann nimmt MongoDB implizit ein <code>AND</code> an.
+Das heißt <code>coll.find({year: 2020, singer: 'Singer 2'})</code> wäre equivalent zu:
+<code>WHERE year=2020 AND singer='Singer 2'</code>.</p>
+<p>Für andere Logische Verknüpfungen und weitere Operationen wie <code>Not Equal</code> etc... gibt es in MongoDB die <a href="https://docs.mongodb.com/manual/reference/operator/query/"><code>Query Operators</code></a>.</p>
+<p>Beispiel für alle Jahre die größer als 2010 sein sollen:
+<code>coll.find({ year: { $gt: 2010 } })</code></p>
+<pre class="hljs"><code><div>coll.find({year: <span class="hljs-number">2020</span> })
+</div></code></pre>
+<p>Um ein Update auf eine bereits existierendes Dokument auszuführen, können wir einfach die <code>upateOne</code> Methode nutzen.
+Diese Methode erwartet 2 Parameter:</p>
+<ol>
+<li>Eine Query, nachdem wir das Dokument suchen (ist identisch mit dem 1. Parameter der <code>find</code> Methode.)</li>
+<li>Werte die wir updaten wollen.</li>
+</ol>
+<p>Beim 2. Parameter können wir mit 2 Methoden des Updates arbeiten. Wenn wir einfach ein JSON Objekt übergeben, dann wird dieses JSON Objekt in das Dokument geschrieben und alle vorherigen Daten, die nicht in dem übergebenen JSON Objekt sind werden gelöscht. Das ganze ist also äquivalent zum löschen des Dokuments und anschließendem erstellen des Dokuments mit gleicher <code>_id</code> und den Daten aus dem 2. Parameter der <code>updateOne()</code> Methode.</p>
+<p>Die zweite Option ist wie unten über den <code>$set</code> Operator zu gehen. Dabei werden die beiden Objekte zusammengefasst und alle Werte des Dokuments werden mit Werten aus dem Parameter Objekt überschrieben. Wenn das Dokument einen Key enthält, der nicht in dem <code>$set</code> Objekt ist, bleibt der Key im Dokument unverändert.</p>
+<pre class="hljs"><code><div>coll.updateOne(
+  { SongName: <span class="hljs-string">'Song 1 Name'</span> },
+  { $<span class="hljs-keyword">set</span>: {
+    year: <span class="hljs-number">1900</span>
+  }}
+)
+
+coll.find( { SongName: <span class="hljs-string">'Song 1 Name'</span> })
+</div></code></pre>
+<h1 id="relations">Relations:</h1>
+<p>Relationen können in MongoDB über zwei Methoden erreicht werden.</p>
+<h2 id="embedding-pattern">Embedding Pattern</h2>
+<p>Die erste Methode ist das <code>Embedding</code> von Sub-Dokumenten in einem Dokument.<br>
+Nehmen wir das vorherige Beispiel des Studenten und der Kurse. Wenn wir sagen, jeder Student kann nur einen Kurs belegen, also eine <code>1-1</code> Beziehung haben, dann können wir das ganz einfach die Daten des Kurses in das Dokument des Studenten einbetten.
+Beispiel wäre unten der Student mit dem <code>name</code> <code>Student Name</code> besucht den Kurs mit dem Name <code>Course 1 Name</code>.
+Dieses Pattern funktioniert für <code>1-1</code> bzw auch für <code>1</code> Kurs zu <code>n</code> Studierende, da wir mehrere Dokumente für die Studierenden anlegen können und dann im <code>course</code> Key die gleichen Daten in verschiedenen Studierende eintragen können.</p>
+<pre class="hljs"><code><div>student: {
+  _id: &lt;ObjectID1&gt;
+  name: <span class="hljs-string">'Student Name'</span>,
+  <span class="hljs-comment">// Subdoc</span>
+  course: {
+    name: <span class="hljs-string">'Course 1 name'</span>
+  }
+}
+</div></code></pre>
+<p>Vorteil:</p>
+<ul>
+<li>Alle Daten können ohne <code>JOIN</code> erreicht werden und es wird nur eine einzige Abfrage benötigt.</li>
+</ul>
+<p>Nachteile:</p>
+<ul>
+<li>Kann zu sehr großen Dokumenten führen, die vlt nicht so häufig genutze Daten jedes mal mitladen müssen.</li>
+</ul>
+<h2 id="subset-pattern">Subset Pattern</h2>
+<p>Der zweite Ansatz entspricht eher eine Relationalen Datenbank. Hierbei legen wir für jeden Studenten und jeden Kurs ein eigenes Dokument and und verknüpfen diese beiden dann anschließend zusammen indem wir in mindesten einen Dokument die <code>_id</code> des anderen Dokuments schreiben.</p>
+<pre class="hljs"><code><div>course: {
+  _id: &lt;ObjectIDCourse&gt;,
+  name: <span class="hljs-string">'Course 1 name'</span>,
+}
+
+student: {
+  _id: &lt;ObjectIDStudent&gt;,
+  name: <span class="hljs-string">'Student Name'</span>,
+  course_id: &lt;ObjectIDCourse&gt;
+}
+</div></code></pre>
+<p>Vorteil:</p>
+<ul>
+<li>Keine / Weniger Duplikation</li>
+<li>Nicht häufig genutzte Daten werden nicht  jedes mal mitgeladen.</li>
+</ul>
+<p>Nachteil:</p>
+<ul>
+<li>Es werden mehr als eine Abfrage benötigt um alle Daten zu holen, da es mehrere Dokumente sind.</li>
+</ul>
+<h2 id="subset-beispiel">Subset Beispiel</h2>
+<p>Hier ist einmal ein Beispiel, wie wir mit den Subset Pattern eine 1-1 Beziehung modellieren können. In dem Beispiel zwischen Studierenden und Kursen.</p>
+<p>Wir erstellen zunächst zwei Kollektionen.</p>
+<pre class="hljs"><code><div>db.createCollection(<span class="hljs-string">'Students'</span>)
+db.createCollection(<span class="hljs-string">'courses'</span>)
+
+students = db.students
+courses = db.courses
+</div></code></pre>
+<p>Jetzt legen wir uns einen Studierenden und einen Kurs an.</p>
+<pre class="hljs"><code><div>students.insertOne(
+  {
+    _id: <span class="hljs-number">1</span>,
+    name: <span class="hljs-string">'student 1'</span>,
+  }
+)
+
+courses.insertOne(
+  {
+    _id: <span class="hljs-number">1</span>,
+    name: <span class="hljs-string">'Course 1'</span>,
+  }
+)
+</div></code></pre>
+<p>Jetzt verknüpfen wir das Kurs Dokument mit dem Studierenden Dokument</p>
+<pre class="hljs"><code><div>students.updateOne(
+  { _id: <span class="hljs-number">1</span> },
+  { $<span class="hljs-keyword">set</span>: {
+    course_id: <span class="hljs-number">1</span>
+  }}
+)
+</div></code></pre>
+<p>Und lassen uns  beides anzeigen.</p>
+<pre class="hljs"><code><div>students.find()
+courses.find()
+</div></code></pre>
+<p>Mit <code>aggregate</code> können wir jetzt eine <code>JOIN</code> Operation ausführen. Dazu sagen wir über den <code>$lookup</code> Operator, wie die <code>JOIN</code> aussehen soll.</p>
+<p>In dem Fall sagen wir, dass wir alle studierenden haben wollen und die mit der <code>courses</code> Kollektion zusammenfügen wollen.
+MongoDB soll das Feld <code>course_id</code> aus den Studierenden mit dem <code>_id</code> Feld der Courses zusammenführen und das ganze dann als <code>course</code> in dem Studierenden einbetten.</p>
+<pre class="hljs"><code><div>students.aggregate([
+  {
+    $lookup: {
+      <span class="hljs-keyword">from</span>: <span class="hljs-string">'courses'</span>,
+      localField: <span class="hljs-string">'course_id'</span>,
+      foreignField: <span class="hljs-string">'_id'</span>,
+      <span class="hljs-keyword">as</span>: <span class="hljs-string">'course'</span>
+    }
+  }
+])
+
+</div></code></pre>
+<h2 id="one-to-many-beispiel">One-to-many Beispiel</h2>
+<p>Jetzt mal ein Beispiel für eine 1-m Beziehung.<br>
+Wir fügen zunächst einen weiteren Kurs ein.</p>
+<pre class="hljs"><code><div>courses.insertOne(
+  {
+    _id: <span class="hljs-number">2</span>,
+    name: <span class="hljs-string">'Course 2'</span>,
+  }
+)
+
+courses.find()
+</div></code></pre>
+<p>Um dann anschließend diesen neuen Kurs unserem bereits vorhandenen Studierenden zuzufügen. Dazu schreiben wir jetzt ein Key <code>course_ids</code>, das wir dann mit einem Array aus <code>_id</code>s füllen. Hier in dem Fall <code>1</code> und <code>2</code></p>
+<pre class="hljs"><code><div><span class="hljs-comment">// Add relation to student</span>
+students.updateOne(
+  { _id: <span class="hljs-number">1</span> },
+  { $<span class="hljs-keyword">set</span>: {
+    course_ids: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>]
+  }}
+)
+</div></code></pre>
+<p>Jetzt können wir wieder über <code>aggregate</code> einen <code>JOIN</code> ausführen. Dieser sieht identisch zum oberen aus, mit dem Unterschied, dass wir jetzt das Alias <code>courses</code> verwenden und das <code>localField</code> ist <code>course_ids</code>.</p>
+<pre class="hljs"><code><div>students.aggregate([
+  {
+    $lookup: {
+      <span class="hljs-keyword">from</span>: <span class="hljs-string">'courses'</span>,
+      localField: <span class="hljs-string">'course_ids'</span>,
+      foreignField: <span class="hljs-string">'_id'</span>,
+      <span class="hljs-keyword">as</span>: <span class="hljs-string">'courses'</span>
+    }
+  }
+])
+</div></code></pre>
+<h2 id="many-to-many">Many-to-many</h2>
+<p>Eine m-n Beziehung können wir sehr ähnlich einer 1-n Beziehung bauen. Nur das wir jetzt in beide Dokumente die jeweilig anderen <code>_id</code>s schreiben. Also in ein <code>course</code> Dokument schreiben wir alle dazugehörigen <code>students</code> und in ein <code>student</code> schreiben wir all sein <code>courses</code>.</p>
+<pre class="hljs"><code><div>courses: [
+  {
+    _id: <span class="hljs-number">1</span>,
+    name: <span class="hljs-string">'course 1'</span>,
+  },
+  {
+    _id: <span class="hljs-number">2</span>,
+    name: <span class="hljs-string">'course 2'</span>,
+    student_ids: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+  }
+]
+
+students: [
+  {
+    _id: <span class="hljs-number">1</span>,
+    name: <span class="hljs-string">'student 1'</span>,
+    course_ids: [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>],
+  }
+  {
+    _id: <span class="hljs-number">2</span>,
+    name: <span class="hljs-string">'student 2'</span>,
+    course_ids: [<span class="hljs-number">1</span>],
+  }
+]
+</div></code></pre>
+<p>Man kann diese Beziehung auch nur von einer Seite modellieren, indem man quasi eine 1-n Beziehung baut und z.B. nur die <code>course_ids</code> in die Studierenden schreibt und hierbei dann auch erlaubt, dass eine <code>_id</code> in mehreren <code>course_ids</code> Arrays stehen darf. Der Nachteil dabei ist, dass die Beziehung dann nur von einer Seite aus erreichbar ist.</p>
+
+</body>
+</html>

@@ -21,7 +21,7 @@ Wir modellieren eine Forum Software. Das Forum besteht aus mehreren Sub-Foren, d
 Jedes Topic kann mehrere Posts enthalten.
 
 Das ER-Diagram sieht so aus:  
-![ER-Diagram](images/ER.jpg)
+**todo ER**
 
 Mit MongoDB können wir die Struktur in 2 unterschiedliche Art und Weise realisieren:  
 - Nested Documents (Wir schreiben z.B. für jedes Subforum nur ein Dokument, dieses enthält dann alle Topics, mit allen Posts)

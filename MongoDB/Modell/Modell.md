@@ -62,7 +62,7 @@ Dies ist sehr ähnlich der Topics. Wir schreiben in jeden User seine erstellten 
 ## Dokumente
 
 ### User
-![User](images/User.png)
+![User](images/User.png)  
 Als JSON:
 ```ts
 {
@@ -75,7 +75,7 @@ Als JSON:
 ```
 
 ### Subforum
-![Subforum](images/Subforum.png)
+![Subforum](images/Subforum.png)  
 Als JSON:
 ```ts
 {
@@ -85,7 +85,7 @@ Als JSON:
 ```
 
 ### TopicInSubforum
-![TopicInSubforum](images/TopicInSubforum.png)
+![TopicInSubforum](images/TopicInSubforum.png)  
 Als JSON: 
 ```ts
 {
@@ -94,7 +94,7 @@ Als JSON:
 }
 ```
 ### Topic
-![Topic](images/Topic.png)
+![Topic](images/Topic.png)  
 Als JSON:
 ```ts
 {
@@ -106,7 +106,7 @@ Als JSON:
 ```
 
 ### Post 
-![Post](images/Post.png)
+![Post](images/Post.png)  
 Als JSON:
 ```ts
 {

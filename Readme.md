@@ -1,6 +1,6 @@
 # No SQL Datenbank Overview
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
-Dies ist die No SQL Datenbank Übersicht für das Labor für Angewandte Informatik & Datenbanken.
+Dies ist die No SQL Datenbank Übersicht für das [Labor für Angewandte Informatik & Datenbanken](https://www.hochschule-bochum.de/fbe/fachgebiete/institut-fuer-informatik/labor-fuer-angewandte-informatik-datenbanken/) der Hochschule Bochum.
 
 Es behandelt:
 - [Cassandra](Cassandra/Cassandra.md)

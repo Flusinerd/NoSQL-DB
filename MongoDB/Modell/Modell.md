@@ -16,12 +16,16 @@
     - [Topic](#topic)
     - [Post](#post)
     - [Gesamtbild](#gesamtbild)
+- [Anlegen der Daten in der Datenbank](#anlegen-der-daten-in-der-datenbank)
+- [Wie kommen wir an unsere Daten?](#wie-kommen-wir-an-unsere-daten)
+  - [Einloggen:](#einloggen)
+  - [List aller Subforen:](#list-aller-subforen)
+  - [Alle Topics innerhalb eines Subforum anzeigen lassen:](#alle-topics-innerhalb-eines-subforum-anzeigen-lassen)
+  - [Öffnen eines Topics und anzeigen der Posts:](#öffnen-eines-topics-und-anzeigen-der-posts)
+  - [Profil und Posts eines Nutzers:](#profil-und-posts-eines-nutzers)
 
 Wir modellieren eine Forum Software. Das Forum besteht aus mehreren Sub-Foren, die wiederum mehrere Topics enthalten können.
 Jedes Topic kann mehrere Posts enthalten.
-
-Das ER-Diagram sieht so aus:  
-**todo ER**
 
 Mit MongoDB können wir die Struktur in 2 unterschiedliche Art und Weise realisieren:  
 - Nested Documents (Wir schreiben z.B. für jedes Subforum nur ein Dokument, dieses enthält dann alle Topics, mit allen Posts)
@@ -90,7 +94,8 @@ Als JSON:
 ```ts
 {
   topicID: number,
-  title: string
+  title: string,
+  creationDate: Date
 }
 ```
 ### Topic
@@ -121,3 +126,138 @@ Als JSON:
 ### Gesamtbild
 Das Ganze als Gesamtbild:
 ![Logic](images/Gesamt.png)
+
+# Anlegen der Daten in der Datenbank
+Um nun mit dem Modell zu arbeiten legen wir uns einige Beispieldaten in der Datenbank an. Wir fangen zunächst damit an, 2 Nutzer und 2 Subforen anzulegen. Die Daten sind im JSON Ordner.
+
+Als aller erstes erstellen wir uns eine Datenbank in der wir alle Collections abspeichern werden:
+```ts
+use Forum;
+```
+
+Zunächst legen wir uns für die Nutzer eine Collection an:  
+```ts
+db.createCollection("Users");
+```
+
+Und eine Collection für die Subforen:  
+```ts
+db.createCollection("Subforums");
+```
+
+Jetzt legen wir uns die ersten beiden Nutzer an:   
+```ts
+db.Users.insertMany(
+  [
+    ...
+  ]
+)
+```
+
+Analog dazu die Subforen:  
+```ts
+db.Subforums.insertMany([
+  ....
+])
+```
+
+Jetzt erstellen wir unser erstes Topic. Dazu ist jetzt zu beachten, dass wir einmal ein neues ``Topic`` erstellen. Dies kommt in die Collection ``Topics`` und wir das Topic Array in dem jeweiligen Subforum mit updaten müssen.
+
+Die TopicID brauchen wir nicht selber zu generieren, dies macht MongoDB automatisch als ``_id`` Feld.
+
+Das Datum würden wir beim erstellen im Programm Code generieren und mitschicken. Hier ist es in den Daten fest vorgegeben.
+
+```ts
+db.createCollection("Topics")
+db.Topics.insertOne({
+  ...
+})
+```
+
+Jetzt noch das Subforum mit den gleichen Daten, aber ohne das ``posts`` Array, updaten. Hierbei sollten wir die ``DocumentID`` des erstellten Topics mitschreiben, damit wir diese später für die Abfragen zur Verfügung haben.
+```ts
+db.Subforums.updateOne(
+  { title: 'Subforum 1' },
+  { $set: {
+    topics: [{
+        topicId: ObjectId(<objectID>)d
+        title: "Topic 1",
+        creationDate: "2020-10-01T10:27:01.975Z"
+    }]
+  }}
+)
+```
+
+Damit haben wir unser Topic erfolgreich erstellt.
+
+Jetzt füllen wir noch unser Topic mit 3 Posts.
+Dazu schreiben wir die ``posts`` einmal in das Posts Array des Topics und einmal in das ``posts`` Array des Nutzers.
+
+Als erstes updaten wir unser Topic:  
+```ts
+db.Topics.updateOne(
+  { _id: ObjectId(<objectID>) },
+  { $set: {
+    posts: [
+      ...
+    ]
+  }}
+)
+```
+
+Und noch unseren Nutzer:
+```ts
+db.Users.updateOne(
+  { username: 'username 1' },
+  { $set: {
+    posts: [
+      ...
+    ]
+  }}
+)
+```
+
+# Wie kommen wir an unsere Daten?
+Gehen wir also nochmal die User-Story durch:  
+**Hinweis** wir können an alle querries ``.pretty()`` dranhängen um das Ergebnis lesbarer zu machen.
+
+## Einloggen:
+Wir melden uns mit den ``username`` an und brauchen ``username`` und ``password``
+```ts
+db.Users.findOne({
+  username: <username>
+}, {
+  username: 1,
+  password: 1
+})
+```
+
+## List aller Subforen:
+Wir holen uns alle Subforen:
+```ts
+db.Subforums.find()
+```
+
+## Alle Topics innerhalb eines Subforum anzeigen lassen:
+Die notwendigen Daten hierfür haben wir bereits in dem ``topcis`` Array des jeweiligen Subforum.
+
+## Öffnen eines Topics und anzeigen der Posts:
+Wir holen uns aus der ``Topics`` Collection das jeweilige Topic. In dem Dokument bekommen wir dann die Posts über das ``posts`` Array:
+```ts
+db.Topics.findOne(
+  { _id:  ObjectId(<objectID>) }
+)
+```
+
+## Profil und Posts eines Nutzers:
+Wir brauchen ``username``, ``firstName``, ``name`` und ``posts`` eines Nutzers:  
+```ts
+db.Users.findOne({
+  username: <username>
+}, {
+  username: 1,
+  firstName: 1,
+  name: 1,
+  posts: 1,
+})
+```

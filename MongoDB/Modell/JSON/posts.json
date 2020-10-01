@@ -1,0 +1,20 @@
+[
+    {
+        "authorUsername": "username 1",
+        "creationDate": "2020-10-01T10:27:01.975Z",
+        "header": "Post 1 Header",
+        "body": "Post 1 Body"
+    },
+    {
+        "authorUsername": "username 1",
+        "creationDate": "2020-10-01T10:27:01.975Z",
+        "header": "Post 2 Header",
+        "body": "Post 2 Body"
+    },
+    {
+        "authorUsername": "username 1",
+        "creationDate": "2020-10-01T10:27:01.975Z",
+        "header": "Post 3 Header",
+        "body": "Post 3 Body"
+    }
+]

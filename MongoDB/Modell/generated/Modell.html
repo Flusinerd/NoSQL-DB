@@ -395,11 +395,19 @@ code {
 </li>
 </ul>
 </li>
+<li><a href="#anlegen-der-daten-in-der-datenbank">Anlegen der Daten in der Datenbank</a></li>
+<li><a href="#wie-kommen-wir-an-unsere-daten">Wie kommen wir an unsere Daten?</a>
+<ul>
+<li><a href="#einloggen">Einloggen:</a></li>
+<li><a href="#list-aller-subforen">List aller Subforen:</a></li>
+<li><a href="#alle-topics-innerhalb-eines-subforum-anzeigen-lassen">Alle Topics innerhalb eines Subforum anzeigen lassen:</a></li>
+<li><a href="#%C3%B6ffnen-eines-topics-und-anzeigen-der-posts">Öffnen eines Topics und anzeigen der Posts:</a></li>
+<li><a href="#profil-und-posts-eines-nutzers">Profil und Posts eines Nutzers:</a></li>
+</ul>
+</li>
 </ul>
 <p>Wir modellieren eine Forum Software. Das Forum besteht aus mehreren Sub-Foren, die wiederum mehrere Topics enthalten können.
 Jedes Topic kann mehrere Posts enthalten.</p>
-<p>Das ER-Diagram sieht so aus:<br>
-<strong>todo ER</strong></p>
 <p>Mit MongoDB können wir die Struktur in 2 unterschiedliche Art und Weise realisieren:</p>
 <ul>
 <li>Nested Documents (Wir schreiben z.B. für jedes Subforum nur ein Dokument, dieses enthält dann alle Topics, mit allen Posts)</li>
@@ -454,7 +462,8 @@ Als JSON:</p>
 Als JSON:</p>
 <pre class="hljs"><code><div>{
   topicID: <span class="hljs-built_in">number</span>,
-  title: <span class="hljs-built_in">string</span>
+  title: <span class="hljs-built_in">string</span>,
+  creationDate: <span class="hljs-built_in">Date</span>
 }
 </div></code></pre>
 <h3 id="topic">Topic</h3>
@@ -481,6 +490,107 @@ Als JSON:</p>
 <h3 id="gesamtbild">Gesamtbild</h3>
 <p>Das Ganze als Gesamtbild:
 <img src="images/Gesamt.png" alt="Logic"></p>
+<h1 id="anlegen-der-daten-in-der-datenbank">Anlegen der Daten in der Datenbank</h1>
+<p>Um nun mit dem Modell zu arbeiten legen wir uns einige Beispieldaten in der Datenbank an. Wir fangen zunächst damit an, 2 Nutzer und 2 Subforen anzulegen. Die Daten sind im JSON Ordner.</p>
+<p>Als aller erstes erstellen wir uns eine Datenbank in der wir alle Collections abspeichern werden:</p>
+<pre class="hljs"><code><div>use Forum;
+</div></code></pre>
+<p>Zunächst legen wir uns für die Nutzer eine Collection an:</p>
+<pre class="hljs"><code><div>db.createCollection(<span class="hljs-string">"Users"</span>);
+</div></code></pre>
+<p>Und eine Collection für die Subforen:</p>
+<pre class="hljs"><code><div>db.createCollection(<span class="hljs-string">"Subforums"</span>);
+</div></code></pre>
+<p>Jetzt legen wir uns die ersten beiden Nutzer an:</p>
+<pre class="hljs"><code><div>db.Users.insertMany(
+  [
+    ...
+  ]
+)
+</div></code></pre>
+<p>Analog dazu die Subforen:</p>
+<pre class="hljs"><code><div>db.Subforums.insertMany([
+  ....
+])
+</div></code></pre>
+<p>Jetzt erstellen wir unser erstes Topic. Dazu ist jetzt zu beachten, dass wir einmal ein neues <code>Topic</code> erstellen. Dies kommt in die Collection <code>Topics</code> und wir das Topic Array in dem jeweiligen Subforum mit updaten müssen.</p>
+<p>Die TopicID brauchen wir nicht selber zu generieren, dies macht MongoDB automatisch als <code>_id</code> Feld.</p>
+<p>Das Datum würden wir beim erstellen im Programm Code generieren und mitschicken. Hier ist es in den Daten fest vorgegeben.</p>
+<pre class="hljs"><code><div>db.createCollection(<span class="hljs-string">"Topics"</span>)
+db.Topics.insertOne({
+  ...
+})
+</div></code></pre>
+<p>Jetzt noch das Subforum mit den gleichen Daten, aber ohne das <code>posts</code> Array, updaten. Hierbei sollten wir die <code>DocumentID</code> des erstellten Topics mitschreiben, damit wir diese später für die Abfragen zur Verfügung haben.</p>
+<pre class="hljs"><code><div>db.Subforums.updateOne(
+  { title: <span class="hljs-string">'Subforum 1'</span> },
+  { $<span class="hljs-keyword">set</span>: {
+    topics: [{
+        topicId: ObjectId(&lt;objectID&gt;)d
+        title: <span class="hljs-string">"Topic 1"</span>,
+        creationDate: <span class="hljs-string">"2020-10-01T10:27:01.975Z"</span>
+    }]
+  }}
+)
+</div></code></pre>
+<p>Damit haben wir unser Topic erfolgreich erstellt.</p>
+<p>Jetzt füllen wir noch unser Topic mit 3 Posts.
+Dazu schreiben wir die <code>posts</code> einmal in das Posts Array des Topics und einmal in das <code>posts</code> Array des Nutzers.</p>
+<p>Als erstes updaten wir unser Topic:</p>
+<pre class="hljs"><code><div>db.Topics.updateOne(
+  { _id: ObjectId(&lt;objectID&gt;) },
+  { $<span class="hljs-keyword">set</span>: {
+    posts: [
+      ...
+    ]
+  }}
+)
+</div></code></pre>
+<p>Und noch unseren Nutzer:</p>
+<pre class="hljs"><code><div>db.Users.updateOne(
+  { username: <span class="hljs-string">'username 1'</span> },
+  { $<span class="hljs-keyword">set</span>: {
+    posts: [
+      ...
+    ]
+  }}
+)
+</div></code></pre>
+<h1 id="wie-kommen-wir-an-unsere-daten">Wie kommen wir an unsere Daten?</h1>
+<p>Gehen wir also nochmal die User-Story durch:<br>
+<strong>Hinweis</strong> wir können an alle querries <code>.pretty()</code> dranhängen um das Ergebnis lesbarer zu machen.</p>
+<h2 id="einloggen">Einloggen:</h2>
+<p>Wir melden uns mit den <code>username</code> an und brauchen <code>username</code> und <code>password</code></p>
+<pre class="hljs"><code><div>db.Users.findOne({
+  username: &lt;username&gt;
+}, {
+  username: <span class="hljs-number">1</span>,
+  password: <span class="hljs-number">1</span>
+})
+</div></code></pre>
+<h2 id="list-aller-subforen">List aller Subforen:</h2>
+<p>Wir holen uns alle Subforen:</p>
+<pre class="hljs"><code><div>db.Subforums.find()
+</div></code></pre>
+<h2 id="alle-topics-innerhalb-eines-subforum-anzeigen-lassen">Alle Topics innerhalb eines Subforum anzeigen lassen:</h2>
+<p>Die notwendigen Daten hierfür haben wir bereits in dem <code>topcis</code> Array des jeweiligen Subforum.</p>
+<h2 id="%C3%B6ffnen-eines-topics-und-anzeigen-der-posts">Öffnen eines Topics und anzeigen der Posts:</h2>
+<p>Wir holen uns aus der <code>Topics</code> Collection das jeweilige Topic. In dem Dokument bekommen wir dann die Posts über das <code>posts</code> Array:</p>
+<pre class="hljs"><code><div>db.Topics.findOne(
+  { _id:  ObjectId(&lt;objectID&gt;) }
+)
+</div></code></pre>
+<h2 id="profil-und-posts-eines-nutzers">Profil und Posts eines Nutzers:</h2>
+<p>Wir brauchen <code>username</code>, <code>firstName</code>, <code>name</code> und <code>posts</code> eines Nutzers:</p>
+<pre class="hljs"><code><div>db.Users.findOne({
+  username: &lt;username&gt;
+}, {
+  username: <span class="hljs-number">1</span>,
+  firstName: <span class="hljs-number">1</span>,
+  name: <span class="hljs-number">1</span>,
+  posts: <span class="hljs-number">1</span>,
+})
+</div></code></pre>
 
 </body>
 </html>

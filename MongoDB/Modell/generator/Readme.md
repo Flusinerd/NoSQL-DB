@@ -21,11 +21,11 @@ node .
 ```
 
 ## Anpassung:
-Es werden Standardmäßig 30 Subforen, User und Topics erstellt. Außerdem werden 100 Posts angelegt.  
-Dies kann in der index.js angepasst werden: Dazu einfach die Zahlen in den Funktionsaufrufen anpassen:
+Es werden 10 Subforen, 20 Topics, 30 Nutzer und 100 Posts generiert.
+Dies kann in der ``./dist/index.js`` angepasst werden: Dazu einfach die Zahlen in den Funktionsaufrufen anpassen:
 ```ts
-generateSubforums(30);
+generateSubforums(10);
 generateUsers(30);
-generateTopics(30);
+generateTopics(20);
 generatePosts(100);
 ```

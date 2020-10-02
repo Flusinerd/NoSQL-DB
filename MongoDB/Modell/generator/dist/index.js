@@ -87,17 +87,17 @@ function generateTopics(amount) {
         var topic = {
             creationDate: faker.date.past(5),
             title: getRandomElement(titles),
-            topicID: faker.random.uuid(),
+            _id: faker.random.uuid(),
             posts: []
         };
         var topicInSubforum = {
             creationDate: topic.creationDate,
             title: topic.title,
-            topicID: topic.topicID
+            topicID: topic._id
         };
         topics.push(topic);
         // Add Topic to a Subforum
-        var subForum = getRandomElement(subForums).topics.push(topicInSubforum);
+        getRandomElement(subForums).topics.push(topicInSubforum);
     }
 }
 /**
@@ -121,25 +121,47 @@ function generatePosts(amount) {
 }
 function getRandomElement(array) {
     var length = array.length;
-    var randomNum = Math.round(Math.random() * length);
-    return array[randomNum];
+    var randomNum = Math.floor(Math.random() * length);
+    var elem = array[randomNum];
+    return elem;
 }
 function exportEverythingAsJson() {
-    if (!fs.existsSync('./generated')) {
-        fs.mkdirSync('./generated');
+    if (!fs.existsSync('../generated')) {
+        fs.mkdirSync('../generated');
     }
-    if (fs.readdirSync('./generated').length > 0) {
-        fs.rmdirSync('./generated');
-        fs.mkdirSync('./generated');
+    var filesInDir = fs.readdirSync('../generated');
+    if (filesInDir.length > 0) {
+        for (var _i = 0, filesInDir_1 = filesInDir; _i < filesInDir_1.length; _i++) {
+            var file = filesInDir_1[_i];
+            fs.unlinkSync('../generated/' + file);
+        }
     }
-    fs.writeFileSync('./genrated/Subforums.json', JSON.stringify(subForums));
-    fs.writeFileSync('./genrated/Users.json', JSON.stringify(users));
-    fs.writeFileSync('./genrated/Topics.json', JSON.stringify(topics));
+    fs.writeFileSync('../generated/Subforums.pretty.json', JSON.stringify(subForums, null, 2));
+    fs.writeFileSync('../generated/Users.pretty.json', JSON.stringify(users, null, 2));
+    fs.writeFileSync('../generated/Topics.pretty.json', JSON.stringify(topics, null, 2));
+    var subforumStream = fs.createWriteStream('../generated/Subforums.json');
+    for (var _a = 0, subForums_1 = subForums; _a < subForums_1.length; _a++) {
+        var subForum = subForums_1[_a];
+        subforumStream.write(JSON.stringify(subForum) + "\n");
+    }
+    subforumStream.end();
+    var userStream = fs.createWriteStream('../generated/Users.json');
+    for (var _b = 0, users_1 = users; _b < users_1.length; _b++) {
+        var user = users_1[_b];
+        userStream.write(JSON.stringify(user) + "\n");
+    }
+    userStream.end();
+    var topicStream = fs.createWriteStream('../generated/Topics.json');
+    for (var _c = 0, topics_1 = topics; _c < topics_1.length; _c++) {
+        var topic = topics_1[_c];
+        topicStream.write(JSON.stringify(topic) + "\n");
+    }
+    topicStream.end();
 }
 // Entry point
-generateSubforums(30);
+generateSubforums(10);
+generateTopics(20);
 generateUsers(30);
-generateTopics(30);
 generatePosts(100);
 exportEverythingAsJson();
 //# sourceMappingURL=index.js.map

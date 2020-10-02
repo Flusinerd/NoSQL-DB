@@ -168,9 +168,9 @@ function exportEverythingAsJson(): void {
 }
 
 // Entry point
-generateSubforums(30);
+generateSubforums(10);
+generateTopics(20);
 generateUsers(30);
-generateTopics(30);
 generatePosts(100);
 
 exportEverythingAsJson();

@@ -135,32 +135,32 @@ function getRandomElement<T>(array: T[]): T {
 }
 
 function exportEverythingAsJson(): void {
-  if (!fs.existsSync('../generated')){
-    fs.mkdirSync('../generated')
+  if (!fs.existsSync('./generated')){
+    fs.mkdirSync('./generated')
   }
-  const filesInDir = fs.readdirSync('../generated');
+  const filesInDir = fs.readdirSync('./generated');
   if (filesInDir.length > 0){
     for (const file of filesInDir) {
-      fs.unlinkSync('../generated/' + file);
+      fs.unlinkSync('./generated/' + file);
     }
   }
 
-  fs.writeFileSync('../generated/Subforums.pretty.json', JSON.stringify(subForums, null, 2));
-  fs.writeFileSync('../generated/Users.pretty.json', JSON.stringify(users, null, 2));
-  fs.writeFileSync('../generated/Topics.pretty.json', JSON.stringify(topics, null, 2));
-  const subforumStream = fs.createWriteStream('../generated/Subforums.json');
+  fs.writeFileSync('./generated/Subforums.pretty.json', JSON.stringify(subForums, null, 2));
+  fs.writeFileSync('./generated/Users.pretty.json', JSON.stringify(users, null, 2));
+  fs.writeFileSync('./generated/Topics.pretty.json', JSON.stringify(topics, null, 2));
+  const subforumStream = fs.createWriteStream('./generated/Subforums.json');
   for (const subForum of subForums) {
     subforumStream.write(JSON.stringify(subForum) + "\n");
   }
   subforumStream.end();
 
-  const userStream = fs.createWriteStream('../generated/Users.json');
+  const userStream = fs.createWriteStream('./generated/Users.json');
   for (const user of users) {
     userStream.write(JSON.stringify(user) + "\n");
   }
   userStream.end();
   
-  const topicStream = fs.createWriteStream('../generated/Topics.json');
+  const topicStream = fs.createWriteStream('./generated/Topics.json');
   for (const topic of topics) {
     topicStream.write(JSON.stringify(topic) + "\n");
   }

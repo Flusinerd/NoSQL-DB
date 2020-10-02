@@ -126,32 +126,32 @@ function getRandomElement(array) {
     return elem;
 }
 function exportEverythingAsJson() {
-    if (!fs.existsSync('../generated')) {
-        fs.mkdirSync('../generated');
+    if (!fs.existsSync('./generated')) {
+        fs.mkdirSync('./generated');
     }
-    var filesInDir = fs.readdirSync('../generated');
+    var filesInDir = fs.readdirSync('./generated');
     if (filesInDir.length > 0) {
         for (var _i = 0, filesInDir_1 = filesInDir; _i < filesInDir_1.length; _i++) {
             var file = filesInDir_1[_i];
-            fs.unlinkSync('../generated/' + file);
+            fs.unlinkSync('./generated/' + file);
         }
     }
-    fs.writeFileSync('../generated/Subforums.pretty.json', JSON.stringify(subForums, null, 2));
-    fs.writeFileSync('../generated/Users.pretty.json', JSON.stringify(users, null, 2));
-    fs.writeFileSync('../generated/Topics.pretty.json', JSON.stringify(topics, null, 2));
-    var subforumStream = fs.createWriteStream('../generated/Subforums.json');
+    fs.writeFileSync('./generated/Subforums.pretty.json', JSON.stringify(subForums, null, 2));
+    fs.writeFileSync('./generated/Users.pretty.json', JSON.stringify(users, null, 2));
+    fs.writeFileSync('./generated/Topics.pretty.json', JSON.stringify(topics, null, 2));
+    var subforumStream = fs.createWriteStream('./generated/Subforums.json');
     for (var _a = 0, subForums_1 = subForums; _a < subForums_1.length; _a++) {
         var subForum = subForums_1[_a];
         subforumStream.write(JSON.stringify(subForum) + "\n");
     }
     subforumStream.end();
-    var userStream = fs.createWriteStream('../generated/Users.json');
+    var userStream = fs.createWriteStream('./generated/Users.json');
     for (var _b = 0, users_1 = users; _b < users_1.length; _b++) {
         var user = users_1[_b];
         userStream.write(JSON.stringify(user) + "\n");
     }
     userStream.end();
-    var topicStream = fs.createWriteStream('../generated/Topics.json');
+    var topicStream = fs.createWriteStream('./generated/Topics.json');
     for (var _c = 0, topics_1 = topics; _c < topics_1.length; _c++) {
         var topic = topics_1[_c];
         topicStream.write(JSON.stringify(topic) + "\n");
